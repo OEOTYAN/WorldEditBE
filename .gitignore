@@ -1,0 +1,6 @@
+# Created by .ignore support plugin (hsz.mobi)
+cmake-build-release
+cmake-build-debug
+.idea
+build
+.vscode
