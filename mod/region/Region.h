@@ -5,29 +5,45 @@
 #ifndef WORLDEDIT_REGION_H
 #define WORLDEDIT_REGION_H
 
-#include "graphics\AABB.h"
+#include "graphics/AABB.h"
 #include <functional>
-
+#include <algorithm>
 using namespace trapdoor;
 enum RegionType {
-	CUBOID = 0,
-	EXPAND = 1,
-	SPHERE = 2,
-	POLY = 3,
-	CONVEX = 4,
-};
-class Region {
-   public:
-	bool selecting = 0;
-	RegionType regionType = CUBOID;
-	BoundingBox boundingBox = {{0, 0, 0}, {0, 0, 0}};
-	virtual void updateBoundingBox();
-	//virtual void shift(const BlockPos& change) = 0;
-	virtual bool setMainPos(const BlockPos& pos) = 0;
-	virtual bool setVicePos(const BlockPos& pos) = 0;
-	virtual bool isInRegion(const BlockPos& pos) { return 1; };
-	virtual void forEachBlockInRegion(
-		const std::function<void(BlockPos*)>& todo);
+    CUBOID = 0,
+    EXPAND = 1,
+    SPHERE = 2,
+    POLY = 3,
+    CONVEX = 4,
 };
 
-#endif	// WORLDEDIT_REGION_H
+class Region {
+protected:
+    bool selecting = false;
+    RegionType regionType = CUBOID;
+    BoundingBox boundingBox{};
+public:
+    explicit Region(const trapdoor::BoundingBox &b);
+
+    trapdoor::BoundingBox getBoundBox() const { return this->boundingBox; }
+
+    virtual  ~Region() = default;
+
+    virtual void updateBoundingBox() = 0;
+
+    //virtual void shift(const BlockPos& change) = 0;
+    virtual bool setMainPos(const BlockPos &pos) = 0;
+
+    virtual bool setVicePos(const BlockPos &pos) = 0;
+
+    virtual bool isInRegion(const BlockPos &pos) const { return true; };
+
+    virtual void forEachBlockInRegion(
+            const std::function<void(const BlockPos &)> &todo);
+
+    inline bool hasSelected() { return this->selecting; }
+
+    static Region *createRegion(RegionType type, const trapdoor::BoundingBox &box);
+};
+
+#endif    // WORLDEDIT_REGION_H

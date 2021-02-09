@@ -11,16 +11,16 @@
 
 using namespace trapdoor;
 
-class PolyRegion : Region {
-   public:
-	std::vector<BlockPos2> points;
-	int minY;
-	int maxY;
-	void updateBoundingBox();
-	PolyRegion(const BoundingBox& region);
-	bool setMainPos(const BlockPos& pos);
-	bool setVicePos(const BlockPos& pos);
-	bool isInRegion(const BlockPos& pos);
-};
+//class PolyRegion : Region {
+//   public:
+//	std::vector<BlockPos2> points;
+//	int minY;
+//	int maxY;
+//	void updateBoundingBox();
+//	PolyRegion(const BoundingBox& region);
+//	bool setMainPos(const BlockPos& pos);
+//	bool setVicePos(const BlockPos& pos);
+//	bool isInRegion(const BlockPos& pos);
+//};
 
 #endif	// WORLDEDIT_POLYREGION_H

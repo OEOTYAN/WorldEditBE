@@ -7,14 +7,17 @@
 
 #include "Region.h"
 
-class ExpandRegion : Region {
-   public:
-	BlockPos pos1;
-	BlockPos pos2;
-	void updateBoundingBox();
-	ExpandRegion(const BoundingBox& region);
-	bool setMainPos(const BlockPos& pos);
-	bool setVicePos(const BlockPos& pos);
+class ExpandRegion : public Region {
+    BlockPos pos1;
+    BlockPos pos2;
+public:
+    void updateBoundingBox() override;
+
+    explicit ExpandRegion(const BoundingBox &region);
+
+    bool setMainPos(const BlockPos &pos) override;
+
+    bool setVicePos(const BlockPos &pos) override;
 };
 
-#endif	// WORLDEDIT_EXPANDREGION_H
+#endif    // WORLDEDIT_EXPANDREGION_H

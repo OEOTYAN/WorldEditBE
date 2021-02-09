@@ -11,16 +11,21 @@
 
 using namespace trapdoor;
 
-class ConvexRegion : Region {
-   public:
-	std::vector<BlockPos> points;
-	int minY;
-	int maxY;
-	void updateBoundingBox();
-	ConvexRegion(const BoundingBox& region);
-	bool setMainPos(const BlockPos& pos);
-	bool setVicePos(const BlockPos& pos);
-	bool isInRegion(const BlockPos& pos);
-};
+//class ConvexRegion : Region {
+//public:
+//    std::vector<BlockPos> points;
+//    int minY;
+//    int maxY;
+//
+//    void updateBoundingBox();
+//
+//    ConvexRegion(const BoundingBox &region);
+//
+//    bool setMainPos(const BlockPos &pos);
+//
+//    bool setVicePos(const BlockPos &pos);
+//
+//    bool isInRegion(const BlockPos &pos);
+//};
 
-#endif	// WORLDEDIT_CONVEXREGION_H
+#endif    // WORLDEDIT_CONVEXREGION_H

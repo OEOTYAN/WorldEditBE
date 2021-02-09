@@ -8,21 +8,26 @@
 #include "BDSMod.h"
 #include "region/Regions.h"
 #include "player/Player.h"
+
+
 using namespace trapdoor;
 
 class WorldEditMod : public trapdoor::BDSMod {
-	std::map<std::string, Region&> playerRegionCache;
-	std::map<std::string, RegionType> playerRegionTypeCache;
 
-	void useOnHook(Actor* player,
-				   const std::string& itemName,
-				   BlockPos& pos,
-				   unsigned int facing,
-				   const Vec3&) override;
+public:
+    std::map<std::string, Region *> playerRegionCache;
 
-	bool attackEntityHook(Actor* player, Actor* entity) override;
+    void useOnHook(Actor *player,
+                   const std::string &itemName,
+                   BlockPos &pos,
+                   unsigned int facing,
+                   const Vec3 &) override;
 
-	void registerCommands() override;
+    bool attackEntityHook(Actor *player, Actor *entity) override;
+
+    void registerCommands() override;
+
+    void initialize() override;
 };
 
-#endif	// MOD_WORLDEDIT_H
+#endif    // MOD_WORLDEDIT_H

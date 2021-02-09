@@ -4,60 +4,76 @@
 
 #include "WorldEditMod.h"
 #include "Message.h"
+#include "BlockSource.h"
 
 using namespace trapdoor;
 
-void WorldEditMod::useOnHook(Actor* player,
-							 const std::string& itemName,
-							 BlockPos& pos,
-							 unsigned int facing,
-							 const Vec3&) {
-	if (itemName == "Wooden Pickaxe")
-		(this->playerRegionCache[player->getNameTag()]).setVicePos(pos);
+void WorldEditMod::useOnHook(Actor *player,
+                             const std::string &itemName,
+                             BlockPos &pos,
+                             unsigned int facing,
+                             const Vec3 &) {
+    printf("use on %s\n", itemName.c_str());
+    if (itemName == "Cactus") {
+        auto *region = this->playerRegionCache[player->getNameTag()];
+        if (!region)region = Region::createRegion(CUBOID, trapdoor::BoundingBox());
+        region->setVicePos(pos);
+        trapdoor::info(player, "set point %d %d %d", pos.x, pos.y, pos.z);
+    }
 }
 
-bool WorldEditMod::attackEntityHook(Actor* player, Actor* entity) {
-	return true;
+bool WorldEditMod::attackEntityHook(Actor *player, Actor *entity) {
+    return true;
 }
 
 void WorldEditMod::registerCommands() {
-	this->commandManager.setEnablePermissionCheck(false);
-	BDSMod::registerCommands();
-	this->commandManager.registerCmd("here", "send your info")->EXE({
-		auto pos = player->getPos()->toBlockPos();
-		trapdoor::broadcastMsg("%s @[%d %d %d] ", player->getNameTag().c_str(),
-							   pos.x, pos.y, pos.z);
-	});
-	this->commandManager
-		.registerCmd("/sel", "select region", Any, ArgType::STR)
-		->EXE({
-			auto regionID = holder->getString();
-			if (regionID == "cuboid") {
-				this->playerRegionTypeCache[player->getNameTag()] = CUBOID;
-				this->playerRegionCache[player->getNameTag()] = CuboidRegion(
-					this->playerRegionCache[player->getNameTag()].boundingBox);
-			} else if (regionID == "expand") {
-				this->playerRegionTypeCache[player->getNameTag()] = EXPAND;
-				this->playerRegionCache[player->getNameTag()] = ExpandRegion(
-					this->playerRegionCache[player->getNameTag()].boundingBox);
-			} else if (regionID == "sphere") {
-				this->playerRegionTypeCache[player->getNameTag()] = SPHERE;
-				this->playerRegionCache[player->getNameTag()] = SphereRegion();
-			} else if (regionID == "poly") {
-				this->playerRegionTypeCache[player->getNameTag()] = POLY;
-				this->playerRegionCache[player->getNameTag()] = PolyRegion();
-			} /*else if (regionID == "convex") {
-				this->playerRegionTypeCache[player->getNameTag()] = CONVEX;
-				this->playerRegionCache[player->getNameTag()] = ConvexRegion();
-			}*/
-		});
-	this->commandManager.registerCmd("/set", "set block", Any, ArgType::INT)
-		->EXE({
-			auto blockID = holder->getInt();
-			auto block = getBlockByID((BlockType)blockID);
-			(this->playerRegionCache[player->getNameTag()])
-				.forEachBlockInRegion([&](BlockPos val) {
-					player->getBlockSource()->setBlock(val, block);
-				});
-		});
+    this->commandManager.setEnablePermissionCheck(false);
+    BDSMod::registerCommands();
+    this->commandManager
+            .registerCmd("/sel", "select region", Any, ArgType::STR)
+            ->EXE({
+                      auto regionID = holder->getString();
+                      auto region = this->playerRegionCache[player->getNameTag()];
+                      auto box = region ? region->getBoundBox() : trapdoor::BoundingBox();
+                      if (regionID == "cuboid") {
+                          this->playerRegionCache[player->getNameTag()] = Region::createRegion(CUBOID, box);
+                      } else if (regionID == "expand") {
+                          this->playerRegionCache[player->getNameTag()] = Region::createRegion(EXPAND, box);
+                      } else if (regionID == "sphere") {
+                          this->playerRegionCache[player->getNameTag()] = Region::createRegion(SPHERE, box);
+                      }
+                      delete region;
+                  }
+            );
+    this->commandManager.registerCmd("/set", "set block", Any, ArgType::INT)
+            ->EXE({
+                      auto blockID = holder->getInt();
+                      auto block = getBlockByID((BlockType) blockID);
+                      auto *region = this->playerRegionCache[player->getNameTag()];
+                      if (region && region->hasSelected()) {
+                          region->forEachBlockInRegion([&](const BlockPos &pos) {
+                              player->getBlockSource()->setBlock(&pos, block);
+                          });
+                      } else {
+                          trapdoor::error(player, "请先划定选区");
+                      }
+                  }
+
+            );
+    this->commandManager.registerCmd("/pos2", "设置点2")
+            ->EXE({
+                      auto pos = player->getStandPosition();
+                      auto *region = this->playerRegionCache[player->getNameTag()];
+                      if (!region)
+                          region = Region::createRegion(CUBOID,
+                                                        trapdoor::BoundingBox());
+                      region->setVicePos(pos);
+                      trapdoor::info(player, "set point 2 %d %d %d", pos.x,
+                                     pos.y, pos.z);
+                  });
+}
+
+void WorldEditMod::initialize() {
+    BDSMod::initialize();
+    initBlockMap();
 }

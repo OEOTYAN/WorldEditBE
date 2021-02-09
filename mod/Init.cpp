@@ -13,16 +13,17 @@ using namespace SymHook;
  * in the new version this hook will be remove
  */
 THook(void,
-	  MSSYM_B1QA4tickB1AE11ServerLevelB2AAA7UEAAXXZ,
-	  trapdoor::Level* serverLevel) {
-	if (!trapdoor::bdsMod) {
-		L_ERROR("mod is nullptr");
-	}
-	if (!trapdoor::bdsMod->getLevel()) {
-		trapdoor::bdsMod->setLevel(serverLevel);
-		/*
-		 * you can init some of you config here
-		 */
-	}
-	original(serverLevel);
+      MSSYM_B1QA4tickB1AE11ServerLevelB2AAA7UEAAXXZ,
+      trapdoor::Level *serverLevel) {
+    if (!trapdoor::bdsMod) {
+        L_ERROR("mod is nullptr");
+    }
+    if (!trapdoor::bdsMod->getLevel()) {
+        trapdoor::bdsMod->setLevel(serverLevel);
+        trapdoor::bdsMod->initialize();
+        /*
+         * you can init some of you config here
+         */
+    }
+    original(serverLevel);
 }
