@@ -8,32 +8,31 @@
 #include <string>
 
 namespace trapdoor {
-    class ItemStackBase;
+	class ItemStackBase;
 
-    class FillingContainer {
-    public:
-        void clearSlot(int);
-    };
+	class FillingContainer {
+	   public:
+		void clearSlot(int);
+	};
 
-    class PlayerInventory {
-    public:
-        size_t getContainerSize();
+	class PlayerInventory {
+	   public:
+		size_t getContainerSize();
 
-        ItemStackBase *getItem(size_t index);
+		ItemStackBase* getItem(size_t index);
 
-        void setItem(size_t index, ItemStackBase *stack);
+		void setItem(size_t index, ItemStackBase* stack);
 
-        void swapItem(size_t idx1, size_t idx2);
+		void swapItem(size_t idx1, size_t idx2);
 
-        size_t findEmptySlot();
+		size_t findEmptySlot();
 
-        FillingContainer *getFillingContainer();
+		FillingContainer* getFillingContainer();
 
-        int containsItem(const std::string &itemName);
+		int containsItem(const std::string& itemName);
 
-        int getSelectSlot();
-    };
-}
+		int getSelectSlot();
+	};
+}  // namespace trapdoor
 
-
-#endif //TRAPDOOR_PLAYERINVENTORY_H
+#endif	// TRAPDOOR_PLAYERINVENTORY_H

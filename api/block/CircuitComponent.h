@@ -8,32 +8,32 @@
 #include "graphics/BlockPos.h"
 #include "entity/Actor.h"
 namespace trapdoor {
-    class CircuitSceneGraph;
+	class CircuitSceneGraph;
 
-    class BaseCircuitComponent {
-    public:
-        int getStrength();
+	class BaseCircuitComponent {
+	   public:
+		int getStrength();
 
-        int getVar2();
+		int getVar2();
 
-        int getPowerCount();
+		int getPowerCount();
 
-        int getAcceptHalfPulse();
+		int getAcceptHalfPulse();
 
-        int getHalfPulse();
+		int getHalfPulse();
 
-        void basePrint(CircuitSceneGraph *graph, trapdoor::Actor *player);
+		void basePrint(CircuitSceneGraph* graph, trapdoor::Actor* player);
 
-        void printRepeater();
+		void printRepeater();
 
-        void printTorch(BlockPos blockPos);
-    };
+		void printTorch(BlockPos blockPos);
+	};
 
-    //红石电路图组件
-    class CircuitSceneGraph {
-    public:
-        BaseCircuitComponent *getBaseCircuitComponent(BlockPos *pos);
-    };
-}
+	//红石电路图组件
+	class CircuitSceneGraph {
+	   public:
+		BaseCircuitComponent* getBaseCircuitComponent(BlockPos* pos);
+	};
+}  // namespace trapdoor
 
-#endif //MOD_CIRCUITCOMPONENT_H
+#endif	// MOD_CIRCUITCOMPONENT_H

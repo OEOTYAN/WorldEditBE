@@ -11,56 +11,43 @@
 #include <functional>
 
 namespace trapdoor {
-    class BlockPos;
+	class BlockPos;
 
-    class Dimension;
+	class Dimension;
 
-    class Actor;
+	class Actor;
 
-    class ActorUniqueID;
+	class ActorUniqueID;
 
+	class Tick {
+	   public:
+		uint64_t tick;
 
+		uint64_t operator%(size_t num) const { return tick % num; }
 
+		bool operator<(const Tick& rhs) const { return tick < rhs.tick; }
 
-    class Tick {
-    public:
-        uint64_t tick;
+		inline uint64_t getTimeStamp() const { return this->tick; }
 
-        uint64_t operator%(size_t num) const { return tick % num; }
+		bool operator==(const Tick& rhs) const { return tick == rhs.tick; }
+	};
 
-        bool operator<(const Tick &rhs) const {
-            return tick < rhs.tick;
-        }
+	class Level {
+	   public:
+		Level() = delete;
 
-        inline uint64_t getTimeStamp() const { return this->tick; }
+		void forEachPlayer(const std::function<void(Actor*)>& todo);
 
-        bool operator==(const Tick &rhs) const {
-            return tick == rhs.tick;
-        }
+		Actor* getNearestPlayer(BlockPos& pos);
 
-    };
+		Actor* getNearestDimensionPlayer(const BlockPos& pos, int dimID);
 
-    class Level {
+		Dimension* getDimFromID(int id);
 
-    public:
-        Level() = delete;
+		Actor* fetchEntity(const trapdoor::ActorUniqueID& id, bool b);
 
-        void forEachPlayer(const std::function<void(Actor *)> &todo);
+		uint64_t getGameTick();
+	};
+}  // namespace trapdoor
 
-
-        Actor *getNearestPlayer(BlockPos &pos);
-
-
-        Actor *getNearestDimensionPlayer(const BlockPos &pos, int dimID);
-
-
-        Dimension *getDimFromID(int id);
-
-        Actor *fetchEntity(const trapdoor::ActorUniqueID &id, bool b);
-
-
-        uint64_t getGameTick();
-    };
-}
-
-#endif //TRAPDOOR_LEVEL_H
+#endif	// TRAPDOOR_LEVEL_H

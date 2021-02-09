@@ -20,66 +20,69 @@
 
 namespace trapdoor {
 
-    class BDSMod : public noncopyable {
-    public:
-        struct ModConfig {
-            size_t particleViewDistance = 256;
-            bool particlePerformanceMode = false;
-        };
-    protected:
-        typedef void CommandRegistry;
-        Level *serverLevel{};
-        CommandRegistry *commandRegistry{};
-        CommandManager commandManager;
-        std::map<std::string, PlayerBuffer> playerCache;
-        ThreadPool *threadPool = nullptr;
-        ModConfig config;
-    public:
+	class BDSMod : public noncopyable {
+	   public:
+		struct ModConfig {
+			size_t particleViewDistance = 256;
+			bool particlePerformanceMode = false;
+		};
 
-        Level *getLevel();
+	   protected:
+		typedef void CommandRegistry;
+		Level* serverLevel{};
+		CommandRegistry* commandRegistry{};
+		CommandManager commandManager;
+		std::map<std::string, PlayerBuffer> playerCache;
+		ThreadPool* threadPool = nullptr;
+		ModConfig config;
 
+	   public:
+		Level* getLevel();
 
-        void setLevel(Level *level);
+		void setLevel(Level* level);
 
+		CommandRegistry* getCommandRegistry();
 
-        CommandRegistry *getCommandRegistry();
+		void setCommandRegistry(CommandRegistry* registry);
 
-        void setCommandRegistry(CommandRegistry *registry);
+		virtual void initialize();
 
-        virtual void initialize();
+		virtual void registerCommands();
 
-        virtual void registerCommands();
+		CommandManager& getCommandManager();
 
-        CommandManager &getCommandManager();
+		inline ThreadPool* getThreadPool() { return this->threadPool; }
 
-        inline ThreadPool *getThreadPool() { return this->threadPool; }
+		virtual void useOnHook(Actor* player,
+							   const std::string& itemName,
+							   BlockPos& pos,
+							   unsigned int facing,
+							   const Vec3&) = 0;
 
-        virtual void useOnHook(Actor *player, const std::string &itemName, BlockPos &pos,
-                               unsigned int facing,
-                               const Vec3 &) = 0;
+		virtual bool attackEntityHook(Actor* player, Actor* entity) = 0;
 
-        virtual bool attackEntityHook(Actor *player, Actor *entity) = 0;
+		virtual CommandPermissionLevel resetVanillaCommandLevel(
+			const std::string& name,
+			CommandPermissionLevel oldLevel) {
+			return oldLevel;
+		}
 
-        virtual CommandPermissionLevel
-        resetVanillaCommandLevel(const std::string &name, CommandPermissionLevel oldLevel) { return oldLevel; }
+		std::map<std::string, PlayerBuffer>& getPlayerBuffer();
 
-        std::map<std::string, PlayerBuffer> &getPlayerBuffer();
+		template <typename Mod>
+		Mod* asInstance() {
+			return reinterpret_cast<Mod*>(this);
+		}
 
-        template<typename Mod>
-        Mod *asInstance() {
-            return reinterpret_cast<Mod *>(this);
-        }
+		ModConfig& getCfg() { return this->config; }
 
-        ModConfig &getCfg() { return this->config; }
+	   public:
+		trapdoor::Actor* fetchEntity(int64_t id, bool b);
+	};
 
+	void initializeMod(BDSMod* bdsMod);
 
-    public:
-        trapdoor::Actor *fetchEntity(int64_t id, bool b);
-    };
+	extern BDSMod* bdsMod;
+}  // namespace trapdoor
 
-    void initializeMod(BDSMod *bdsMod);
-
-    extern BDSMod *bdsMod;
-}
-
-#endif //TRAPDOOR_TRAPDOOR_H
+#endif	// TRAPDOOR_TRAPDOOR_H

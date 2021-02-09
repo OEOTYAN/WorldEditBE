@@ -11,7 +11,7 @@
 #include "BDSMod.h"
 #include "WorldEditMod.h"
 #include "Player.h"
-
+/*
 // player place block
 using namespace SymHook;
 
@@ -25,6 +25,7 @@ THook(
 	bool flag) {
 	return original(self, player, block, pos, flag);
 }
+*/
 // player destroy block
 
 THook(
@@ -36,7 +37,12 @@ THook(
 	int a4) {
 	uint64_t* ptr = self + 1;
 	auto player = reinterpret_cast<trapdoor::Actor*>(*ptr);
-	auto modInstance = trapdoor::bdsMod->asInstance<mod::WorldEditMod>();
-	auto block = player->getBlockSource()->getBlock(pos->x, pos->y, pos->z);
+	int slot = player->getPlayerInventory()->containsItem("Wooden Pickaxe");
+	if (slot > -1) {
+		auto modInstance = trapdoor::bdsMod->asInstance<mod::WorldEditMod>();
+		auto block = player->getBlockSource()->getBlock(pos->x, pos->y, pos->z);
+		(modInstance->playerRegionCache[player->getNameTag()]).setMainPos(pos);
+		player->getBlockSource()->setBlock(&pos, block);
+	}
 	original(self, pos, a3, a4);
 }

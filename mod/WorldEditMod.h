@@ -6,10 +6,14 @@
 #define MOD_WORLDEDIT_H
 
 #include "BDSMod.h"
-
+#include "region/Regions.h"
+#include "player/Player.h"
 using namespace trapdoor;
 
 class WorldEditMod : public trapdoor::BDSMod {
+	std::map<std::string, Region&> playerRegionCache;
+	std::map<std::string, RegionType> playerRegionTypeCache;
+
 	void useOnHook(Actor* player,
 				   const std::string& itemName,
 				   BlockPos& pos,
