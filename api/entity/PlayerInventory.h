@@ -11,29 +11,28 @@ namespace trapdoor {
     class ItemStackBase;
 
     class FillingContainer {
-    public:
+       public:
         void clearSlot(int);
     };
 
     class PlayerInventory {
-    public:
+       public:
         size_t getContainerSize();
 
-        ItemStackBase *getItem(size_t index);
+        ItemStackBase* getItem(size_t index);
 
-        void setItem(size_t index, ItemStackBase *stack);
+        void setItem(size_t index, ItemStackBase* stack);
 
         void swapItem(size_t idx1, size_t idx2);
 
         size_t findEmptySlot();
 
-        FillingContainer *getFillingContainer();
+        FillingContainer* getFillingContainer();
 
-        int containsItem(const std::string &itemName);
+        int containsItem(const std::string& itemName);
 
         int getSelectSlot();
     };
-}
+}  // namespace trapdoor
 
-
-#endif //TRAPDOOR_PLAYERINVENTORY_H
+#endif  // TRAPDOOR_PLAYERINVENTORY_H

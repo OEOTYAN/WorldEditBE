@@ -8,61 +8,48 @@
 #include <string>
 
 namespace trapdoor {
-    bool BlockPos::operator==(const BlockPos &v) const {
+    bool BlockPos::operator==(const BlockPos& v) const {
         return x == v.x && y == v.y && z == v.z;
     }
 
-    bool BlockPos::operator!=(const BlockPos &v) const {
+    bool BlockPos::operator!=(const BlockPos& v) const {
         return x != v.x || y != v.y || z != v.z;
     }
 
-    float BlockPos::distanceTo(const BlockPos &blockPos) const {
-        return (float) sqrt((blockPos.x - x) * (blockPos.x - x) +
-                            (blockPos.y - y) * (blockPos.y - y) +
-                            (blockPos.z - z) * (blockPos.z - z));
+    float BlockPos::distanceTo(const BlockPos& blockPos) const {
+        return (float)sqrt((blockPos.x - x) * (blockPos.x - x) +
+                           (blockPos.y - y) * (blockPos.y - y) +
+                           (blockPos.z - z) * (blockPos.z - z));
     }
 
-    std::ostream &operator<<(std::ostream &os, const BlockPos &vec3) {
+    std::ostream& operator<<(std::ostream& os, const BlockPos& vec3) {
         os << "[" << vec3.x << "," << vec3.y << "," << vec3.z << "]";
         return os;
     }
 
-    Vec3 BlockPos::toVec3() const {
-        return {x, y, z};
-    }
+    Vec3 BlockPos::toVec3() const { return {x, y, z}; }
 
     std::string BlockPos::toString() const {
-        return "["
-               + std::to_string(x) + ","
-               + std::to_string(y) + ","
-               + std::to_string(z) + "]";
+        return "[" + std::to_string(x) + "," + std::to_string(y) + "," +
+               std::to_string(z) + "]";
     }
 
     std::vector<BlockPos> BlockPos::getNeighbourPos() {
-        return {
-                {x + 1, y,     z},
-                {x - 1, y,     z},
-                {x,     y + 1, z},
-                {x,     y - 1, z},
-                {x,     y,     z + 1},
-                {x,     y,     z - 1}
-        };
+        return {{x + 1, y, z}, {x - 1, y, z}, {x, y + 1, z},
+                {x, y - 1, z}, {x, y, z + 1}, {x, y, z - 1}};
     }
 
     std::vector<BlockPos> BlockPos::getPlainNeighbourPos() {
-        return {
-                {x + 1, y, z},
-                {x - 1, y, z},
-                {x,     y, z + 1},
-                {x,     y, z - 1}
-        };
+        return {{x + 1, y, z}, {x - 1, y, z}, {x, y, z + 1}, {x, y, z - 1}};
     }
 
     BlockPos2 BlockPos::InChunkOffset() const {
         auto newX = x % 16;
         auto newZ = z % 16;
-        if (newX < 0)newX += 16;
-        if (newZ < 0)newZ += 16;
+        if (newX < 0)
+            newX += 16;
+        if (newZ < 0)
+            newZ += 16;
         return {newX, newZ};
     }
 
@@ -72,7 +59,7 @@ namespace trapdoor {
         return {cx / 16, cz / 16};
     }
 
-    bool BlockPos::operator<(const BlockPos &rhs) const {
+    bool BlockPos::operator<(const BlockPos& rhs) const {
         if (x < rhs.x)
             return true;
         if (rhs.x < x)
@@ -84,36 +71,44 @@ namespace trapdoor {
         return z < rhs.z;
     }
 
-    int BlockPos::operator*(const BlockPos &pos) const {
+    int BlockPos::operator*(const BlockPos& pos) const {
         return this->x * pos.x + this->y * pos.y + this->z * pos.z;
     }
 
-    BlockPos BlockPos::operator+(const BlockPos &pos) const {
+    BlockPos BlockPos::operator+(const BlockPos& pos) const {
         return {x + pos.x, y + pos.y, z + pos.z};
     }
 
-
-    std::string BlockPos2::toString() const {
-        return "["
-               + std::to_string(x) + ","
-               + std::to_string(z) + "]";
+    bool BlockPos::containedWithin(const BlockPos& min,
+                                   const BlockPos& max) const {
+        return x >= min.x && x <= max.x && y >= min.y && y <= max.y &&
+               z >= min.z && z <= max.z;
     }
 
+    std::string BlockPos2::toString() const {
+        return "[" + std::to_string(x) + "," + std::to_string(z) + "]";
+    }
 
     bool BlockPos2::isSlimeChunk() const {
-        auto seed = (x * 0x1f1f1f1fu) ^(uint32_t) z;
+        auto seed = (x * 0x1f1f1f1fu) ^ (uint32_t)z;
         std::mt19937 mt(seed);
         return mt() % 10 == 0;
     }
 
-    bool BlockPos2::operator<(const BlockPos2 &rhs) const {
+    bool BlockPos2::operator<(const BlockPos2& rhs) const {
         if (x < rhs.x)
             return true;
         if (rhs.x < x)
             return false;
         return z < rhs.z;
     }
+    bool BlockPos2::operator==(const BlockPos2& v) const {
+        return x == v.x && z == v.z;
+    }
 
+    bool BlockPos2::operator!=(const BlockPos2& v) const {
+        return x != v.x || z != v.z;
+    }
     std::string facingToString(FACING facing) {
         switch (facing) {
             case FACING::POS_X:
@@ -171,11 +166,13 @@ namespace trapdoor {
     }
 
     bool facingIsPos(FACING facing) {
-        return facing == FACING::POS_X || facing == FACING::POS_Y || facing == FACING::POS_Z;
+        return facing == FACING::POS_X || facing == FACING::POS_Y ||
+               facing == FACING::POS_Z;
     }
 
     bool facingIsNeg(FACING facing) {
-        return facing == FACING::NEG_X || facing == FACING::NEG_Y || facing == FACING::NEG_Z;
+        return facing == FACING::NEG_X || facing == FACING::NEG_Y ||
+               facing == FACING::NEG_Z;
     }
 
     bool facingIsX(FACING facing) {
@@ -207,8 +204,7 @@ namespace trapdoor {
             default:
                 return FACING::POS_X;
         }
-
     }
-}
+}  // namespace trapdoor
 typedef trapdoor::BlockPos BlockPos;
 typedef trapdoor::BlockPos2 BlockPos2;

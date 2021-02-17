@@ -11,7 +11,7 @@ namespace trapdoor {
     class CircuitSceneGraph;
 
     class BaseCircuitComponent {
-    public:
+       public:
         int getStrength();
 
         int getVar2();
@@ -22,7 +22,7 @@ namespace trapdoor {
 
         int getHalfPulse();
 
-        void basePrint(CircuitSceneGraph *graph, trapdoor::Actor *player);
+        void basePrint(CircuitSceneGraph* graph, trapdoor::Actor* player);
 
         void printRepeater();
 
@@ -31,9 +31,9 @@ namespace trapdoor {
 
     //红石电路图组件
     class CircuitSceneGraph {
-    public:
-        BaseCircuitComponent *getBaseCircuitComponent(BlockPos *pos);
+       public:
+        BaseCircuitComponent* getBaseCircuitComponent(BlockPos* pos);
     };
-}
+}  // namespace trapdoor
 
-#endif //MOD_CIRCUITCOMPONENT_H
+#endif  // MOD_CIRCUITCOMPONENT_H

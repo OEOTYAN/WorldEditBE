@@ -15,11 +15,10 @@ namespace trapdoor {
         int y = 0;
         int z = 0;
 
-        bool operator==(const RightClickCache &rhs) const;
+        bool operator==(const RightClickCache& rhs) const;
 
-        bool operator!=(const RightClickCache &rhs) const;
+        bool operator!=(const RightClickCache& rhs) const;
     };
-
 
     //这个结构专门存储玩家个人相关的缓存信息(相当于玩家的一个私人空间),后面可能加新东西
     struct PlayerBuffer {
@@ -27,4 +26,4 @@ namespace trapdoor {
     };
 }  // namespace trapdoor
 
-#endif    // TRAPDOOR_PLAYER_BUFFER_H
+#endif  // TRAPDOOR_PLAYER_BUFFER_H

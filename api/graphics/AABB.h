@@ -17,10 +17,7 @@ namespace trapdoor {
             p2 = _p2;
         }
 
-        Vec3 getCenter() const {
-            return (p1 + p2) * 0.5;
-        }
-
+        Vec3 getCenter() const { return (p1 + p2) * 0.5; }
     };
 
     struct BoundingBox {
@@ -34,7 +31,8 @@ namespace trapdoor {
 
         AABB getSpawnArea() const {
             int x = (this->maxPos.x - this->minPos.x + 1) / 2 + this->minPos.x;
-            int z = (this->maxPos.z - this->minPos.z + 1) / 2 + this->minPos.z + 1;
+            int z =
+                (this->maxPos.z - this->minPos.z + 1) / 2 + this->minPos.z + 1;
             Vec3 minPoint{x, minPos.y, z - 1};
             Vec3 maxPoint{x + 1, maxPos.y + 1, z};
             return {minPoint, maxPoint};
@@ -44,7 +42,7 @@ namespace trapdoor {
             return {minPos.toVec3(), maxPos.toVec3() + Vec3(1, 1, 1)};
         }
 
-        bool operator<(const BoundingBox &rhs) const {
+        bool operator<(const BoundingBox& rhs) const {
             if (minPos < rhs.minPos)
                 return true;
             if (rhs.minPos < minPos)
@@ -52,7 +50,7 @@ namespace trapdoor {
             return maxPos < rhs.maxPos;
         }
     };
-}
+}  // namespace trapdoor
 typedef trapdoor::AABB AABB;
 typedef trapdoor::BoundingBox BoundingBox;
-#endif    // TRAPDOOR_AABB_H
+#endif  // TRAPDOOR_AABB_H

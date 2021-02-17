@@ -19,48 +19,35 @@ namespace trapdoor {
 
     class ActorUniqueID;
 
-
-
-
     class Tick {
-    public:
+       public:
         uint64_t tick;
 
         uint64_t operator%(size_t num) const { return tick % num; }
 
-        bool operator<(const Tick &rhs) const {
-            return tick < rhs.tick;
-        }
+        bool operator<(const Tick& rhs) const { return tick < rhs.tick; }
 
         inline uint64_t getTimeStamp() const { return this->tick; }
 
-        bool operator==(const Tick &rhs) const {
-            return tick == rhs.tick;
-        }
-
+        bool operator==(const Tick& rhs) const { return tick == rhs.tick; }
     };
 
     class Level {
-
-    public:
+       public:
         Level() = delete;
 
-        void forEachPlayer(const std::function<void(Actor *)> &todo);
+        void forEachPlayer(const std::function<void(Actor*)>& todo);
 
+        Actor* getNearestPlayer(BlockPos& pos);
 
-        Actor *getNearestPlayer(BlockPos &pos);
+        Actor* getNearestDimensionPlayer(const BlockPos& pos, int dimID);
 
+        Dimension* getDimFromID(int id);
 
-        Actor *getNearestDimensionPlayer(const BlockPos &pos, int dimID);
-
-
-        Dimension *getDimFromID(int id);
-
-        Actor *fetchEntity(const trapdoor::ActorUniqueID &id, bool b);
-
+        Actor* fetchEntity(const trapdoor::ActorUniqueID& id, bool b);
 
         uint64_t getGameTick();
     };
-}
+}  // namespace trapdoor
 
-#endif //TRAPDOOR_LEVEL_H
+#endif  // TRAPDOOR_LEVEL_H

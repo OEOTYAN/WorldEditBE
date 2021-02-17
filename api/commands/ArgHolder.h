@@ -5,7 +5,6 @@
 #ifndef COMMANDMANAGER_ARGTYPE_H
 #define COMMANDMANAGER_ARGTYPE_H
 
-
 #include <string>
 #include <utility>
 
@@ -20,10 +19,11 @@ namespace trapdoor {
         int intVal = 0;
         std::string strVal;
         bool boolVal = true;
-    public:
+
+       public:
         explicit ArgHolder(int arg) : intVal(arg) {}
 
-        explicit ArgHolder(const char *arg) : strVal(arg) {}
+        explicit ArgHolder(const char* arg) : strVal(arg) {}
 
         explicit ArgHolder(bool arg) : boolVal(arg) {}
 
@@ -34,14 +34,13 @@ namespace trapdoor {
         std::string getString() const;
 
         bool getBool() const;
-
     };
 
-    //y1s1下面这三个方法都可以不要了，懒得换了
-    ArgHolder *integerArg(int val);
+    // y1s1下面这三个方法都可以不要了，懒得换了
+    ArgHolder* integerArg(int val);
 
-    ArgHolder *strArg(const std::string &val);
+    ArgHolder* strArg(const std::string& val);
 
-    ArgHolder *boolArg(bool val);
-}
-#endif //COMMANDMANAGER_ARGTYPE_H
+    ArgHolder* boolArg(bool val);
+}  // namespace trapdoor
+#endif  // COMMANDMANAGER_ARGTYPE_H

@@ -18,7 +18,7 @@ namespace trapdoor {
     class Actor;
 
     class MessageBuilder {
-    public:
+       public:
         static const uint8_t DARK_READ;
         static const uint8_t RED;
         static const uint8_t GOLD;
@@ -35,32 +35,32 @@ namespace trapdoor {
         static const uint8_t ITALIC;
         static const uint8_t RESET;
 
+        MessageBuilder& text(const std::string& s);
 
-        MessageBuilder &text(const std::string &s);
-
-
-        template<typename ...Args>
-        MessageBuilder &textF(const std::string &format, Args ...args) {
+        template <typename... Args>
+        MessageBuilder& textF(const std::string& format, Args... args) {
             this->text(trapdoor::format(format, args...));
             return *this;
         }
 
-        template<typename ...Args>
-        MessageBuilder &sTextF(uint8_t style, const std::string &format, Args ...args) {
+        template <typename... Args>
+        MessageBuilder& sTextF(uint8_t style,
+                               const std::string& format,
+                               Args... args) {
             this->sText(trapdoor::format(format, args...), style);
             return *this;
         }
 
-        MessageBuilder &sText(const std::string &s, uint8_t style);
+        MessageBuilder& sText(const std::string& s, uint8_t style);
 
-        MessageBuilder &pos(const BlockPos &pos);
+        MessageBuilder& pos(const BlockPos& pos);
 
-        template<typename T>
-        MessageBuilder &num(T x) {
+        template <typename T>
+        MessageBuilder& num(T x) {
             if (std::is_arithmetic<T>()) {
                 if (std::is_floating_point<T>()) {
                     char buffer[32];
-                    sprintf(buffer, "%.3f", (double) x);
+                    sprintf(buffer, "%.3f", (double)x);
                     std::string s(buffer);
                     sText(s, GREEN | BOLD);
                 } else {
@@ -70,27 +70,23 @@ namespace trapdoor {
             return *this;
         }
 
-        MessageBuilder &vec3(const Vec3 &vec3);
+        MessageBuilder& vec3(const Vec3& vec3);
 
-        MessageBuilder &aabb(AABB aabb);
-
+        MessageBuilder& aabb(AABB aabb);
 
         std::string get();
 
-        void send(Actor *player);
+        void send(Actor* player);
 
         void broadcast();
 
-        void operator+=(const std::string &str) {
-            this->text(str);
-        }
+        void operator+=(const std::string& str) { this->text(str); }
 
-
-    private:
+       private:
         const static std::map<uint8_t, std::string> STYLE_MAP;
         std::vector<std::string> messageBuffer;
     };
 
     typedef MessageBuilder MSG_COLOR;
-}
-#endif //TRAPDOOR_MSGBUILDER_H
+}  // namespace trapdoor
+#endif  // TRAPDOOR_MSGBUILDER_H

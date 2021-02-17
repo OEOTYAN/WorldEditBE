@@ -13,7 +13,7 @@ namespace trapdoor {
 
     class Dimension;
 
-    class BlockSource;//玩家网络id
+    class BlockSource;  //玩家网络id
     struct NetworkIdentifier {
         uint64_t getHash();
     };
@@ -21,7 +21,7 @@ namespace trapdoor {
     struct ActorUniqueID {
         int64_t uid;
 
-        bool operator==(const ActorUniqueID &u) const {
+        bool operator==(const ActorUniqueID& u) const {
             return this->uid == u.uid;
         }
     };
@@ -36,23 +36,21 @@ namespace trapdoor {
             return mceHaseAccLong(x, a2);
         }
 
-        std::size_t operator()(const ActorUniqueID &key) const {
+        std::size_t operator()(const ActorUniqueID& key) const {
             return mceHsaLongLong(key.uid >> 32, key.uid);
         }
     };
 
-
     class Level;
 
-//实体对象(主要指的玩家,懒得做类型判定了)
+    //实体对象(主要指的玩家,懒得做类型判定了)
     class Actor {
-    public:
-
+       public:
         //获取头部坐标
-        Vec3 *getPos();
+        Vec3* getPos();
 
         //获取视角
-        void getViewActor(Vec3 *vec3, float val);
+        void getViewActor(Vec3* vec3, float val);
 
         //获取头顶tag名字
         std::string getNameTag();
@@ -61,25 +59,25 @@ namespace trapdoor {
         void setGameMode(int mode);
 
         //获取 blocksource
-        BlockSource *getBlockSource();
+        BlockSource* getBlockSource();
 
         //获取维度id
         int getDimensionID();
 
         //获取维度对象
-        Dimension *getDimension();
+        Dimension* getDimension();
 
         //获取维度名字
         std::string getDimensionName();
 
         //获取客户端网络id
-        NetworkIdentifier *getClientID();
+        NetworkIdentifier* getClientID();
 
         //获取玩家权限等级
         PlayerPermissionLevel getCommandLevel();
 
         //获取玩家背包
-        PlayerInventory *getPlayerInventory();
+        PlayerInventory* getPlayerInventory();
 
         unsigned int getSelectSlot();
 
@@ -90,19 +88,20 @@ namespace trapdoor {
         std::string getActorId();
 
         //获取level对象
-        Level *getLevel();
+        Level* getLevel();
 
         //设置头顶的tag
-        void setNameTag(const std::string &name);
+        void setNameTag(const std::string& name);
     };
 
-/**
- * 实体标签
- * todo: 重写这个结构，因为已经知道这个东西的具体结构，因此不再需要reinterrupt了
- */
+    /**
+     * 实体标签
+     * todo:
+     * 重写这个结构，因为已经知道这个东西的具体结构，因此不再需要reinterrupt了
+     */
     class ActorDefinitionIdentifier {
-    public:
+       public:
         std::string getName();
     };
-}
+}  // namespace trapdoor
 #endif

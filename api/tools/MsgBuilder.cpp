@@ -1,7 +1,8 @@
 //
 // Created by xhy on 2020/8/25.
 //
-//todo 这个builder要重写，因为不够实用，尽量用模板重新实现一个类printf接口的Buider
+// todo
+// 这个builder要重写，因为不够实用，尽量用模板重新实现一个类printf接口的Buider
 #include "MsgBuilder.h"
 #include "Message.h"
 #include "entity/Actor.h"
@@ -24,50 +25,38 @@ namespace trapdoor {
     const uint8_t MessageBuilder::RESET = 0x30;
 
     const std::map<uint8_t, std::string> MessageBuilder::STYLE_MAP = {
-            {BLACK,        "§0"},
-            {DARK_READ,    "§4"},
-            {GOLD,         "§6"},
-            {GRAY,         "§7"},
-            {BLUE,         "§9"},
-            {GREEN,        "§a"},
-            {AQUA,         "§b"},
-            {RED,          "§c"},
-            {LIGHT_PURPLE, "§d"},
-            {YELLOW,       "§e"},
-            {WHITE,        "§f"},
-            {BOLD,         "§l"},
-            {ITALIC,       "§o"},
-            {RESET,        "§r"}
-    };
+        {BLACK, "§0"},        {DARK_READ, "§4"}, {GOLD, "§6"},  {GRAY, "§7"},
+        {BLUE, "§9"},         {GREEN, "§a"},     {AQUA, "§b"},  {RED, "§c"},
+        {LIGHT_PURPLE, "§d"}, {YELLOW, "§e"},    {WHITE, "§f"}, {BOLD, "§l"},
+        {ITALIC, "§o"},       {RESET, "§r"}};
 
-    MessageBuilder &MessageBuilder::text(const std::string &s) {
+    MessageBuilder& MessageBuilder::text(const std::string& s) {
         messageBuffer.emplace_back(s);
         return *this;
     }
 
-    MessageBuilder &MessageBuilder::pos(const BlockPos &pos) {
+    MessageBuilder& MessageBuilder::pos(const BlockPos& pos) {
         return this->sText(pos.toString(), AQUA | BOLD);
     }
 
-    MessageBuilder &MessageBuilder::vec3(const Vec3 &vec3) {
+    MessageBuilder& MessageBuilder::vec3(const Vec3& vec3) {
         return this->sText(vec3.toString(), AQUA | BOLD);
     }
 
-    MessageBuilder &MessageBuilder::aabb(AABB aabb) {
+    MessageBuilder& MessageBuilder::aabb(AABB aabb) {
         auto str = "[" + aabb.p1.toString() + "," + aabb.p2.toString() + "]";
         return this->sText(str, BLUE);
     }
 
     std::string MessageBuilder::get() {
         std::string s;
-        for (const auto &i:messageBuffer) {
+        for (const auto& i : messageBuffer) {
             s.append(i);
         }
         return s;
     }
 
-
-    MessageBuilder &MessageBuilder::sText(const std::string &s, uint8_t style) {
+    MessageBuilder& MessageBuilder::sText(const std::string& s, uint8_t style) {
         auto fontColor = style & 0x0fu;
         auto fontStyle = style & 0xf0u;
         auto iter = STYLE_MAP.find(fontColor);
@@ -81,14 +70,11 @@ namespace trapdoor {
         return *this;
     }
 
-    void MessageBuilder::send(Actor *actor) {
+    void MessageBuilder::send(Actor* actor) {
         info(actor, get());
-        //todo: rewrite
+        // todo: rewrite
         // info(get());
     }
 
-    void MessageBuilder::broadcast() {
-        broadcastMsg(this->get());
-    }
-}
-
+    void MessageBuilder::broadcast() { broadcastMsg(this->get()); }
+}  // namespace trapdoor

@@ -8,19 +8,18 @@
 
 struct Biome;
 
-
 namespace trapdoor {
 
-/*
- * 方块接口
- *
- */
+    /*
+     * 方块接口
+     *
+     */
     class BlockLegacy;
 
     class Block {
-    public:
+       public:
         // 获取方块legacy
-        BlockLegacy *getLegacy();
+        BlockLegacy* getLegacy();
 
         //获取方块名称(和item返回的名称不一样，不知道Mojang怎么想的)
         std::string getName();
@@ -32,19 +31,18 @@ namespace trapdoor {
         bool isAir();
     };
 
-
-/*
- * 方块实体接口
- */
+    /*
+     * 方块实体接口
+     */
     class BlockActor {
-    public:
+       public:
         //获取位置
-        BlockPos *getPosition();
+        BlockPos* getPosition();
 
         //获取方块对象
-        Block *getBlock();
+        Block* getBlock();
     };
 
-}
+}  // namespace trapdoor
 typedef trapdoor::Block Block;
 typedef trapdoor::BlockActor BlockActor;

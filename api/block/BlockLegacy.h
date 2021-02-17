@@ -15,16 +15,16 @@ namespace trapdoor {
     class Block;
 
     class BlockLegacy {
-    public:
+       public:
         //获取调试信息
         std::string getDebugText();
 
         //获取具有特殊值状态的方块对象
-        Block *tryGetStateBlock(unsigned short state);
+        Block* tryGetStateBlock(unsigned short state);
 
         BlockType getBlockID();
     };
-}
+}  // namespace trapdoor
 typedef trapdoor::BlockLegacy BlockLegacy;
 
-#endif //TRAPDOOR_BLOCKLEGACY_H
+#endif  // TRAPDOOR_BLOCKLEGACY_H

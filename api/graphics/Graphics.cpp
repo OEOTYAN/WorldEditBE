@@ -14,7 +14,10 @@ namespace trapdoor {
         //把整数进行二进制分割，获取粒子的生成坐标
         std::map<float, int> binSplit(float start, float end) {
             std::map<float, int> lengthMap;
-            int length = static_cast<int>(end - start);
+            float size = end - start;
+            if (abs(size - round(size)) > 10e-5f)  //非整数长度
+                lengthMap.insert({end - 0.5f, 1});
+            int length = static_cast<int>(size);
             while (length >= 512) {
                 length -= 256;
                 auto point = static_cast<float>(128.0 + start);
@@ -22,10 +25,12 @@ namespace trapdoor {
                 lengthMap.insert({point, 256});
             }
 
-            for (auto defaultLength = 256; defaultLength >= 1; defaultLength /= 2) {
+            for (auto defaultLength = 256; defaultLength >= 1;
+                 defaultLength /= 2) {
                 if (length >= defaultLength) {
                     length -= defaultLength;
-                    auto point = static_cast<float>(0.5 * defaultLength + start);
+                    auto point =
+                        static_cast<float>(0.5 * defaultLength + start);
                     start += defaultLength;
                     lengthMap.insert({point, defaultLength});
                 }
@@ -78,13 +83,13 @@ namespace trapdoor {
             }
             return str;
         }
-    }
+    }  // namespace
 
-
-    void drawLine(const Vec3 &originPoint,
+    void drawLine(const Vec3& originPoint,
                   FACING direction,
                   float length,
-                  GRAPHIC_COLOR color, int dimType) {
+                  GRAPHIC_COLOR color,
+                  int dimType) {
         if (length <= 0)
             return;
         float start = 0, end = 0;
@@ -121,25 +126,25 @@ namespace trapdoor {
         if (facingIsX(direction)) {
             for (auto i : list)
                 positionList.insert(
-                        {{i.first, originPoint.y, originPoint.z}, i.second});
+                    {{i.first, originPoint.y, originPoint.z}, i.second});
         } else if (facingIsY(direction)) {
             for (auto i : list)
                 positionList.insert(
-                        {{originPoint.x, i.first, originPoint.z}, i.second});
+                    {{originPoint.x, i.first, originPoint.z}, i.second});
         } else if (facingIsZ(direction)) {
             for (auto i : list)
                 positionList.insert(
-                        {{originPoint.x, originPoint.y, i.first}, i.second});
+                    {{originPoint.x, originPoint.y, i.first}, i.second});
         }
 
         for (auto points : positionList) {
             auto particleType =
-                    getLineParticleType(points.second, direction, color);
+                getLineParticleType(points.second, direction, color);
             auto particleTypeInv =
-                    getLineParticleType(points.second, invFacing(direction), color);
+                getLineParticleType(points.second, invFacing(direction), color);
             spawnParticle(points.first, particleType, dimType);
             if (!bdsMod->getCfg().particlePerformanceMode)
                 spawnParticle(points.first, particleTypeInv, dimType);
         }
     }
-}
+}  // namespace trapdoor

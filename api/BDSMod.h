@@ -21,65 +21,68 @@
 namespace trapdoor {
 
     class BDSMod : public noncopyable {
-    public:
+       public:
         struct ModConfig {
             size_t particleViewDistance = 256;
             bool particlePerformanceMode = false;
         };
-    protected:
+
+       protected:
         typedef void CommandRegistry;
-        Level *serverLevel{};
-        CommandRegistry *commandRegistry{};
+        Level* serverLevel{};
+        CommandRegistry* commandRegistry{};
         CommandManager commandManager;
         std::map<std::string, PlayerBuffer> playerCache;
-        ThreadPool *threadPool = nullptr;
+        ThreadPool* threadPool = nullptr;
         ModConfig config;
-    public:
 
-        Level *getLevel();
+       public:
+        Level* getLevel();
 
+        void setLevel(Level* level);
 
-        void setLevel(Level *level);
+        CommandRegistry* getCommandRegistry();
 
-
-        CommandRegistry *getCommandRegistry();
-
-        void setCommandRegistry(CommandRegistry *registry);
+        void setCommandRegistry(CommandRegistry* registry);
 
         virtual void initialize();
 
         virtual void registerCommands();
 
-        CommandManager &getCommandManager();
+        CommandManager& getCommandManager();
 
-        inline ThreadPool *getThreadPool() { return this->threadPool; }
+        inline ThreadPool* getThreadPool() { return this->threadPool; }
 
-        virtual void useOnHook(Actor *player, const std::string &itemName, BlockPos &pos,
+        virtual void useOnHook(Actor* player,
+                               const std::string& itemName,
+                               BlockPos& pos,
                                unsigned int facing,
-                               const Vec3 &) = 0;
+                               const Vec3&) = 0;
 
-        virtual bool attackEntityHook(Actor *player, Actor *entity) = 0;
+        virtual bool attackEntityHook(Actor* player, Actor* entity) = 0;
 
-        virtual CommandPermissionLevel
-        resetVanillaCommandLevel(const std::string &name, CommandPermissionLevel oldLevel) { return oldLevel; }
-
-        std::map<std::string, PlayerBuffer> &getPlayerBuffer();
-
-        template<typename Mod>
-        Mod *asInstance() {
-            return reinterpret_cast<Mod *>(this);
+        virtual CommandPermissionLevel resetVanillaCommandLevel(
+            const std::string& name,
+            CommandPermissionLevel oldLevel) {
+            return oldLevel;
         }
 
-        ModConfig &getCfg() { return this->config; }
+        std::map<std::string, PlayerBuffer>& getPlayerBuffer();
 
+        template <typename Mod>
+        Mod* asInstance() {
+            return reinterpret_cast<Mod*>(this);
+        }
 
-    public:
-        trapdoor::Actor *fetchEntity(int64_t id, bool b);
+        ModConfig& getCfg() { return this->config; }
+
+       public:
+        trapdoor::Actor* fetchEntity(int64_t id, bool b);
     };
 
-    void initializeMod(BDSMod *bdsMod);
+    void initializeMod(BDSMod* bdsMod);
 
-    extern BDSMod *bdsMod;
-}
+    extern BDSMod* bdsMod;
+}  // namespace trapdoor
 
-#endif //TRAPDOOR_TRAPDOOR_H
+#endif  // TRAPDOOR_TRAPDOOR_H

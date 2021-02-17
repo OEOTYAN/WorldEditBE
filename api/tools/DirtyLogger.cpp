@@ -1,6 +1,7 @@
 //
-// 一个简单的日志类 ，仅仅是简单的信息按照格式写入文件中，没有任何性能和可靠性保证
-// Created by xhy on 2020/12/2.
+// 一个简单的日志类
+// ，仅仅是简单的信息按照格式写入文件中，没有任何性能和可靠性保证 Created by xhy
+// on 2020/12/2.
 //
 
 #include <cstdarg>
@@ -11,34 +12,41 @@
 namespace trapdoor {
     namespace {
         LOG_LEVEL logLevel = LOG_LEVEL::LOG_INFO;
-        FILE *logger = nullptr;
+        FILE* logger = nullptr;
         bool devMode = false;
 
         void setColor(int k) {
             HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
             SetConsoleTextAttribute(hConsole, k);
         }
-    }
+    }  // namespace
 
-//初始化日志，不然不能使用
-    void initLogger(const std::string &logFileName) {
+    //初始化日志，不然不能使用
+    void initLogger(const std::string& logFileName) {
         logger = fopen(logFileName.c_str(), "a+");
-        L_INFO("\n-------------------------TRAPDOOR LOG FILE---------------------------\n "
-               "-----------------------------init BDS------------------------------- \n");
-        if (!logger)logger = stderr;
+        L_INFO(
+            "\n-------------------------TRAPDOOR LOG "
+            "FILE---------------------------\n "
+            "-----------------------------init "
+            "BDS------------------------------- \n");
+        if (!logger)
+            logger = stderr;
     }
 
-
-//向日志里面打印信息
-//如果是开发者模式就打印所有日志，无视日志等级
-    void logInfo(LOG_LEVEL level, const char *functionName, const char *fmt, ...) {
-        if (logLevel > level && !devMode) return;
+    //向日志里面打印信息
+    //如果是开发者模式就打印所有日志，无视日志等级
+    void logInfo(LOG_LEVEL level,
+                 const char* functionName,
+                 const char* fmt,
+                 ...) {
+        if (logLevel > level && !devMode)
+            return;
         switch (level) {
             case LOG_LEVEL::LOG_DEBUG:
-                setColor(10); //green
+                setColor(10);  // green
                 break;
             case LOG_LEVEL::LOG_INFO:
-                setColor(7); //white
+                setColor(7);  // white
                 break;
             case LOG_LEVEL::LOG_WARNING:
                 setColor(6);
@@ -50,11 +58,12 @@ namespace trapdoor {
                 break;
         }
         va_list args;
-                va_start(args, fmt);
+        va_start(args, fmt);
         time_t rawTime;
         time(&rawTime);
-        struct tm *t = localtime(&rawTime);
-        fprintf(logger, "[%.2d-%.2d %.2d:%.2d:%.2d]", t->tm_mon + 1, t->tm_mday, t->tm_hour, t->tm_min, t->tm_sec);
+        struct tm* t = localtime(&rawTime);
+        fprintf(logger, "[%.2d-%.2d %.2d:%.2d:%.2d]", t->tm_mon + 1, t->tm_mday,
+                t->tm_hour, t->tm_min, t->tm_sec);
         switch (logLevel) {
             case LOG_LEVEL::LOG_ERROR:
                 fprintf(logger, "[ERROR] ");
@@ -83,12 +92,7 @@ namespace trapdoor {
         fflush(logger);
     }
 
-    void setLogLevel(LOG_LEVEL log_level) {
-        logLevel = log_level;
-    }
+    void setLogLevel(LOG_LEVEL log_level) { logLevel = log_level; }
 
-    void setDevMode(bool useDevMode) {
-        devMode = useDevMode;
-    }
-}
-
+    void setDevMode(bool useDevMode) { devMode = useDevMode; }
+}  // namespace trapdoor

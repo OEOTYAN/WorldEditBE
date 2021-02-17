@@ -21,24 +21,34 @@ namespace trapdoor {
 
         explicit Vec3(float _x);
 
-        Vec3(int _x, int _y, int _z) : x((float) _x), y((float) _y), z((float) _z) {}
+        Vec3(int _x, int _y, int _z)
+            : x((float)_x), y((float)_y), z((float)_z) {}
 
         Vec3(float _x, float _y, float _z) : x(_x), y(_y), z(_z) {}
 
-        bool operator==(const Vec3 &v) const;
+        bool operator==(const Vec3& v) const;
 
-        bool operator!=(const Vec3 &v) const;
+        bool operator!=(const Vec3& v) const;
 
-        bool operator<(const Vec3 &v) const;
+        bool operator<(const Vec3& v) const;
 
-        Vec3 operator+(const Vec3 &v) const;
+        Vec3 operator+(const Vec3& v) const;
 
-        Vec3 operator-(const Vec3 &v) const;
+        Vec3 operator-(const Vec3& v) const;
 
         Vec3 operator*(float times) const;
 
-        float distanceTo(const Vec3 &vec3) const;
+        Vec3 operator*(const Vec3& v) const;
 
+        Vec3 cross(const Vec3& v) const;
+
+        float dot(const Vec3& v) const;
+
+        Vec3 normalize() const;
+
+        float distanceTo(const Vec3& vec3) const;
+
+        float length() const;
 
         std::string toString() const;
 
@@ -46,8 +56,7 @@ namespace trapdoor {
 
         std::string toDirString() const;
     };
-}
-
+}  // namespace trapdoor
 
 typedef trapdoor::Vec3 Vec3;
-#endif //LIBMCBEMOD_VEC3_H
+#endif  // LIBMCBEMOD_VEC3_H

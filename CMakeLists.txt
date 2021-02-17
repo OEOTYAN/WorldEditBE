@@ -60,14 +60,25 @@ set(MOD_NAME WorldEdit-BE)
 add_library(${MOD_NAME}
         SHARED
         mod/dllmain.cpp
-        mod/Init.cpp
-        mod/WorldEditMod.cpp mod/WorldEditMod.h
+        mod/WorldEditMod.cpp
+        mod/WorldEditMod.h
+        mod/region/ConvexRegion.cpp
+        mod/region/CuboidRegion.cpp
+        mod/region/ExpandRegion.cpp
+        mod/region/PolyRegion.cpp
+        mod/region/Region.cpp
+        mod/region/SphereRegion.cpp
+        mod/player/Player.cpp
+        mod/tick/GameTick.cpp
         )
 
 target_include_directories(
         ${MOD_NAME}
         PUBLIC
         mod
+        mod/region
+        mod/player
+        mod/eval
         api
         api/block
         api/commands

@@ -14,13 +14,7 @@
 #include <vector>
 #include "ArgHolder.h"
 
-enum class ArgType {
-    INT,
-    BOOL,
-    STR,
-    NONE
-};
-
+enum class ArgType { INT, BOOL, STR, NONE };
 
 /*
  * 命令节点
@@ -40,7 +34,7 @@ namespace trapdoor {
     };
 
     enum CommandPermissionLevel : uint8_t {
-        Any = 0, //Tell
+        Any = 0,  // Tell
         GameMasters = 1,
         Admin = 2,
         Host = 3,
@@ -48,14 +42,12 @@ namespace trapdoor {
         Internal = 5
     };
 
-    inline const char *commandPermissionLevelToStr(CommandPermissionLevel level);
+    inline const char* commandPermissionLevelToStr(
+        CommandPermissionLevel level);
 
-    enum CommandFlag1 : uint8_t {
-        None = 0,
-        Message = 0x20
-    };
+    enum CommandFlag1 : uint8_t { None = 0, Message = 0x20 };
 
-    inline const char *CommandFlag1ToStr(CommandFlag1 flag1) {
+    inline const char* CommandFlag1ToStr(CommandFlag1 flag1) {
         switch (flag1) {
             case None:
                 return "None";
@@ -66,13 +58,12 @@ namespace trapdoor {
         }
     }
 
-
     enum CommandFlag2 : uint8_t {
         Cheat = 0x0,
         NoCheat = 0x40,
     };
 
-    inline const char *CommandFlag2ToStr(CommandFlag2 flag2) {
+    inline const char* CommandFlag2ToStr(CommandFlag2 flag2) {
         switch (flag2) {
             case Cheat:
                 return "cheat";
@@ -86,39 +77,40 @@ namespace trapdoor {
     class CommandNode {
         std::string name;
         std::string description;
-        std::map<std::string, CommandNode *> nextNodes;
-        std::function<void(ArgHolder *, Actor *)> work;
+        std::map<std::string, CommandNode*> nextNodes;
+        std::function<void(ArgHolder*, Actor*)> work;
         ArgType argType = ArgType::NONE;
 
-    public:
+       public:
         explicit CommandNode(std::string name);
 
         CommandNode(std::string name, std::string description);
 
-        CommandNode *execute(const std::function<void(ArgHolder *, Actor *)> &task) {
+        CommandNode* execute(
+            const std::function<void(ArgHolder*, Actor*)>& task) {
             this->work = task;
             return this;
         }
 
-        inline std::string getName() const {
-            return this->name;
-        }
+        inline std::string getName() const { return this->name; }
 
-        inline void setArgType(ArgType type) {
-            this->argType = type;
-        }
+        inline void setArgType(ArgType type) { this->argType = type; }
 
-        CommandNode *then(CommandNode *node);
+        CommandNode* then(CommandNode* node);
 
-        void printHelpInfo(int idx, Actor *actor) const;
+        void printHelpInfo(int idx, Actor* actor) const;
 
         std::string getDescription() const;
 
-        int parse(Actor *player, const std::vector<std::string> &tokens, size_t idx);
+        int parse(Actor* player,
+                  const std::vector<std::string>& tokens,
+                  size_t idx);
 
-        void run(ArgHolder *holder, Actor *player);
+        void run(ArgHolder* holder, Actor* player);
     };
 
-    CommandNode *Arg(const std::string &args, const std::string &desc, ArgType type = ArgType::NONE);
-}
-#endif //COMMANDMANAGER_COMMANDNODE_H
+    CommandNode* Arg(const std::string& args,
+                     const std::string& desc,
+                     ArgType type = ArgType::NONE);
+}  // namespace trapdoor
+#endif  // COMMANDMANAGER_COMMANDNODE_H
