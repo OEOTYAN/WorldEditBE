@@ -66,7 +66,7 @@ void WorldEditMod::registerCommands() {
             } else if (regionID == "clear") {
                 this->playerRegionCache[player->getNameTag()]->selecting =
                     false;
-                trapdoor::info(player, "region switch to convex");
+                trapdoor::info(player, "region clear");
             } else {
                 trapdoor::error(player, "error");
             }
