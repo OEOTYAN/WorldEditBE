@@ -20,9 +20,7 @@ void PolyRegion::updateBoundingBox() {
 }
 PolyRegion::PolyRegion(const BoundingBox& region, const int& dim)
     : Region(region, dim) {
-    while (points.size() != 0) {
-        points.pop_back();
-    }
+    points.clear();
     this->regionType = POLY;
 }
 bool PolyRegion::setMainPos(const BlockPos& pos, const int& dim) {
@@ -31,9 +29,7 @@ bool PolyRegion::setMainPos(const BlockPos& pos, const int& dim) {
     selecting = 1;
     minY = pos.y;
     maxY = pos.y;
-    while (!points.empty()) {
-        points.pop_back();
-    }
+    points.clear();
     points.push_back({pos.x, pos.z});
     updateBoundingBox();
     return true;

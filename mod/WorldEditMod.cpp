@@ -15,7 +15,6 @@ void WorldEditMod::useOnHook(Actor* player,
                              BlockPos& pos,
                              unsigned int facing,
                              const Vec3&) {
-    // L_INFO("use on %s\n", itemName.c_str());
     bool isWand = false;
     auto item = player->getSelectedItem();
     if (item->getId() == 271)
