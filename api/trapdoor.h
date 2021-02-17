@@ -17,4 +17,4 @@
 #include "block/BlockSource.h"
 #include "block/VanillaBlockType.h"
 #include "block/Block.h"
-#endif	// MOD_TRAPDOOR_H
+#endif  // MOD_TRAPDOOR_H

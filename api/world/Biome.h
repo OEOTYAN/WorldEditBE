@@ -9,13 +9,13 @@
 
 namespace trapdoor {
 
-	class Biome {
-	   public:
-		int getBiomeType();
+    class Biome {
+       public:
+        int getBiomeType();
 
-		std::string getBiomeName();
-	};
+        std::string getBiomeName();
+    };
 
 }  // namespace trapdoor
 
-#endif	// TRAPDOOR_BIOME_H
+#endif  // TRAPDOOR_BIOME_H

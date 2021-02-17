@@ -18,32 +18,32 @@ namespace trapdoor {
     class LevelChunk;
 
     class BlockSource {
-    public:
+       public:
         //获取某个位置的方块对象
-        Block *getBlock(int x, int y, int z);
+        Block* getBlock(int x, int y, int z);
 
         //获取某个位置的方块对象
-        Block *getBlock(const BlockPos &);
+        Block* getBlock(const BlockPos&);
 
         //设置某个位置为某方块
-        void setBlock(const BlockPos *, Block *block);
+        void setBlock(const BlockPos*, Block* block);
 
         //更新某个方块
-        void updateNeighborsAt(const BlockPos *pos);
+        void updateNeighborsAt(const BlockPos* pos);
 
         //更新position周围的六个方块
-        void updateNeighbors(BlockPos *pos);
+        void updateNeighbors(BlockPos* pos);
 
         //获取某个位置的群系
-        Biome *getBiome(const BlockPos *pos);
+        Biome* getBiome(const BlockPos* pos);
 
-        uint8_t getRawBrightness(const BlockPos *pos);
+        uint8_t getRawBrightness(const BlockPos* pos);
 
-        int getMaterial(const BlockPos *pos);
+        int getMaterial(const BlockPos* pos);
 
         // LevelChunk *getLevelChunk(const ChunkPos &chunkPos);
     };
 
 }  // namespace trapdoor
 typedef trapdoor::BlockSource BlockSource;
-#endif    // TRAPDOOR_BLOCKSOURCE_H
+#endif  // TRAPDOOR_BLOCKSOURCE_H

@@ -8,21 +8,21 @@
 #include "Region.h"
 
 class CuboidRegion : public Region {
-private:
+   public:
     BlockPos mainPos;
     BlockPos vicePos;
-public:
     void updateBoundingBox() override;
 
-    explicit CuboidRegion(const BoundingBox &region);
+    explicit CuboidRegion(const BoundingBox& region);
 
-    bool setMainPos(const BlockPos &pos) override;
+    bool setMainPos(const BlockPos& pos) override;
 
-    bool setVicePos(const BlockPos &pos) override;
+    bool setVicePos(const BlockPos& pos) override;
 
-    //void forEachBlockInRegion(const std::function<void(const BlockPos &)> &todo) override;
+    // void forEachBlockInRegion(const std::function<void(const BlockPos &)>
+    // &todo) override;
 
-    Region *createRegion(RegionType type, trapdoor::BoundingBox boundingBox);
+    Region* createRegion(RegionType type, trapdoor::BoundingBox boundingBox);
 };
 
-#endif    // WORLDEDIT_CUBOIDREGION_H
+#endif  // WORLDEDIT_CUBOIDREGION_H

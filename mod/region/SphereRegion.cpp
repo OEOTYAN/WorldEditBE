@@ -5,7 +5,7 @@
 #include "SphereRegion.h"
 
 void SphereRegion::updateBoundingBox() {
-    auto newRadius = (int) lround(radius);
+    auto newRadius = (int)(radius);
     boundingBox.minPos.x = center.x - newRadius;
     boundingBox.minPos.y = std::max({center.y - newRadius, 0});
     boundingBox.minPos.z = center.z - newRadius;
@@ -14,15 +14,15 @@ void SphereRegion::updateBoundingBox() {
     boundingBox.maxPos.z = center.z + newRadius;
 }
 
-
-bool SphereRegion::setMainPos(const BlockPos &pos) {
+bool SphereRegion::setMainPos(const BlockPos& pos) {
     selecting = true;
     center = pos;
+    radius = 0.5;
     updateBoundingBox();
     return true;
 }
 
-bool SphereRegion::setVicePos(const BlockPos &pos) {
+bool SphereRegion::setVicePos(const BlockPos& pos) {
     if (!selecting) {
         return false;
     }
@@ -35,10 +35,11 @@ bool SphereRegion::setVicePos(const BlockPos &pos) {
     return false;
 }
 
-bool SphereRegion::isInRegion(const BlockPos &pos) {
+bool SphereRegion::isInRegion(const BlockPos& pos) {
     return pos.distanceTo(center) <= radius;
 }
 
-SphereRegion::SphereRegion(const BoundingBox &region) : Region(region), radius(0) {
+SphereRegion::SphereRegion(const BoundingBox& region)
+    : Region(region), radius(0.5) {
     this->regionType = SPHERE;
 }

@@ -60,7 +60,6 @@ set(MOD_NAME WorldEdit-BE)
 add_library(${MOD_NAME}
         SHARED
         mod/dllmain.cpp
-        mod/Init.cpp
         mod/WorldEditMod.cpp
         mod/WorldEditMod.h
         mod/region/ConvexRegion.cpp
@@ -70,6 +69,7 @@ add_library(${MOD_NAME}
         mod/region/Region.cpp
         mod/region/SphereRegion.cpp
         mod/player/Player.cpp
+        mod/tick/GameTick.cpp
         )
 
 target_include_directories(

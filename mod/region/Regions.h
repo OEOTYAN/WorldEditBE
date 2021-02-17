@@ -10,6 +10,6 @@
 #include "ExpandRegion.h"
 #include "SphereRegion.h"
 #include "PolyRegion.h"
-//#include "ConvexRegion.h"
+#include "ConvexRegion.h"
 
-#endif	// WORLDEDIT_REGIONS_H
+#endif  // WORLDEDIT_REGIONS_H

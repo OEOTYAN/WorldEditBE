@@ -9,17 +9,17 @@
 
 namespace trapdoor {
 
-	enum DimensionType { OverWorld = 0, Nether = 1, TheEnd = 2 };
+    enum DimensionType { OverWorld = 0, Nether = 1, TheEnd = 2 };
 
-	class Dimension {
-	   public:
-		void printBaseTypeLimit();
+    class Dimension {
+       public:
+        void printBaseTypeLimit();
 
-		CircuitSceneGraph* getGraph();
+        CircuitSceneGraph* getGraph();
 
-		bool isRedstoneTick();
-	};
+        bool isRedstoneTick();
+    };
 
 }  // namespace trapdoor
 
-#endif	// TRAPDOOR_DIMENSION_H
+#endif  // TRAPDOOR_DIMENSION_H

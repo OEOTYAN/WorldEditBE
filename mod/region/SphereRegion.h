@@ -8,19 +8,22 @@
 #include "Region.h"
 
 class SphereRegion : public Region {
-public:
     BlockPos center;
+
+   public:
     float radius{};
 
     void updateBoundingBox() override;
 
-    explicit SphereRegion(const BoundingBox &region);
+    explicit SphereRegion(const BoundingBox& region);
 
-    bool setMainPos(const BlockPos &pos) override;
+    bool setMainPos(const BlockPos& pos) override;
 
-    bool setVicePos(const BlockPos &pos) override;
+    BlockPos getCenter() { return center; };
 
-    bool isInRegion(const BlockPos &pos);
+    bool setVicePos(const BlockPos& pos) override;
+
+    bool isInRegion(const BlockPos& pos) override;
 };
 
-#endif    // WORLDEDIT_SPHEREREGION_H
+#endif  // WORLDEDIT_SPHEREREGION_H

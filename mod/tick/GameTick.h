@@ -1,0 +1,8 @@
+//
+// Created by OEOTYAN on 2021/2/15.
+//
+
+#ifndef WORLDEDIT_GAMETICK_H
+#define WORLDEDIT_GAMETICK_H
+
+#endif  // WORLDEDIT_GAMETICK_H

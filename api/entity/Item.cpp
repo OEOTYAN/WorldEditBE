@@ -18,16 +18,16 @@ namespace trapdoor {
     std::string ItemStackBase::getItemName() {
         std::string name;
         SYM_CALL(
-                void(*)(ItemStackBase * , std::string *),
-                MSSYM_B1QA7getNameB1AE13ItemStackBaseB2AAA4QEBAB1QA2AVB2QDA5basicB1UA6stringB1AA2DUB2QDA4charB1UA6traitsB1AA1DB1AA3stdB2AAA1VB2QDA9allocatorB1AA1DB1AA12B2AAA3stdB2AAA2XZ,
-                this, &name);
+            void (*)(ItemStackBase*, std::string*),
+            MSSYM_B1QA7getNameB1AE13ItemStackBaseB2AAA4QEBAB1QA2AVB2QDA5basicB1UA6stringB1AA2DUB2QDA4charB1UA6traitsB1AA1DB1AA3stdB2AAA1VB2QDA9allocatorB1AA1DB1AA12B2AAA3stdB2AAA2XZ,
+            this, &name);
         return name;
     }
 
-    int ItemStackBase::getNum() { return (int) *((unsigned char *) this + 34); }
+    int ItemStackBase::getNum() { return (int)*((unsigned char*)this + 34); }
 
     void ItemStackBase::setNull() {
-        SYM_CALL(void(*)(ItemStackBase * ),
+        SYM_CALL(void (*)(ItemStackBase*),
                  SymHook::MSSYM_B1QA7setNullB1AE13ItemStackBaseB2AAA7UEAAXXZ,
                  this);
     }
@@ -36,25 +36,25 @@ namespace trapdoor {
 using namespace SymHook;
 //右键代理类
 THook(
-        void,
-        MSSYM_B1QA5useOnB1AA4ItemB2AAA4QEBAB1UE14NAEAVItemStackB2AAA9AEAVActorB2AAA7HHHEMMMB1AA1Z,
-        void *item,
-        trapdoor::ItemStackBase *itemStack,
-        trapdoor::Actor *player,
-        int x,
-        int y,
-        int z,
-        unsigned int facing,
-        float dx,
-        float dy,
-        float dz) {
-    uint64_t gameTick = trapdoor::bdsMod->getLevel()->getGameTick();
-    // L_INFO("%.2f %.2f %.2f,tick =  %llu", x, y, z, gameTick);
+    void,
+    MSSYM_B1QA5useOnB1AA4ItemB2AAA4QEBAB1UE14NAEAVItemStackB2AAA9AEAVActorB2AAA7HHHEMMMB1AA1Z,
+    void* item,
+    trapdoor::ItemStackBase* itemStack,
+    trapdoor::Actor* player,
+    int x,
+    int y,
+    int z,
+    unsigned int facing,
+    float dx,
+    float dy,
+    float dz) {
+    uint64_t gameTick = player->getLevel()->getGameTick();
+    L_INFO("%.2f %.2f %.2f,tick =  %llu", x, y, z, gameTick);
     trapdoor::RightClickCache targetCache{gameTick, x, y, z};
 
-    auto &playerCache =
-            trapdoor::bdsMod->getPlayerBuffer()[player->getNameTag()]
-                    .rightClickCache;
+    auto& playerCache =
+        trapdoor::bdsMod->getPlayerBuffer()[player->getNameTag()]
+            .rightClickCache;
     //下面用一个简单的缓存 + 判定消除重复点击
     if (playerCache != targetCache) {
         //响应右键事件

@@ -10,13 +10,13 @@
 #include "Block.h"
 
 namespace trapdoor {
-	struct ItemStackBase {
-		std::string getItemName();
+    struct ItemStackBase {
+        std::string getItemName();
 
-		int getNum();
+        int getNum();
 
-		void setNull();
-	};
+        void setNull();
+    };
 }  // namespace trapdoor
 
-#endif	// TRAPDOOR_ITEM_H
+#endif  // TRAPDOOR_ITEM_H

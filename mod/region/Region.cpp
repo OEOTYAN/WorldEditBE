@@ -5,7 +5,8 @@
 #include "Region.h"
 #include "Regions.h"
 
-void Region::forEachBlockInRegion(const std::function<void(const BlockPos &)> &todo) {
+void Region::forEachBlockInRegion(
+    const std::function<void(const BlockPos&)>& todo) {
     for (int x = boundingBox.minPos.x; x <= boundingBox.maxPos.x; x++)
         for (int y = boundingBox.minPos.y; y <= boundingBox.maxPos.y; y++)
             for (int z = boundingBox.minPos.z; z <= boundingBox.maxPos.z; z++) {
@@ -15,10 +16,9 @@ void Region::forEachBlockInRegion(const std::function<void(const BlockPos &)> &t
             }
 }
 
+Region::Region(const trapdoor::BoundingBox& b) : boundingBox(b) {}
 
-Region::Region(const trapdoor::BoundingBox &b) : boundingBox(b) {}
-
-Region *Region::createRegion(RegionType type, const BoundingBox &box) {
+Region* Region::createRegion(RegionType type, const BoundingBox& box) {
     switch (type) {
         case CUBOID:
             return new CuboidRegion(box);
@@ -26,10 +26,10 @@ Region *Region::createRegion(RegionType type, const BoundingBox &box) {
             return new ExpandRegion(box);
         case SPHERE:
             return new SphereRegion(box);
-        case POLY: //NOLINT
-            return new CuboidRegion(box);
+        case POLY:  // NOLINT
+            return new PolyRegion(box);
         case CONVEX:
-            return new CuboidRegion(box);
+            return new ConvexRegion(box);
         default:
             return new CuboidRegion(box);
     }
