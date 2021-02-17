@@ -14,16 +14,17 @@ void SphereRegion::updateBoundingBox() {
     boundingBox.maxPos.z = center.z + newRadius;
 }
 
-bool SphereRegion::setMainPos(const BlockPos& pos) {
+bool SphereRegion::setMainPos(const BlockPos& pos, const int& dim) {
     selecting = true;
+    dimensionID = dim;
     center = pos;
     radius = 0.5;
     updateBoundingBox();
     return true;
 }
 
-bool SphereRegion::setVicePos(const BlockPos& pos) {
-    if (!selecting) {
+bool SphereRegion::setVicePos(const BlockPos& pos, const int& dim) {
+    if (!selecting || dim != dimensionID) {
         return false;
     }
     float dis = pos.distanceTo(center);
@@ -39,7 +40,8 @@ bool SphereRegion::isInRegion(const BlockPos& pos) {
     return pos.distanceTo(center) <= radius;
 }
 
-SphereRegion::SphereRegion(const BoundingBox& region)
-    : Region(region), radius(0.5) {
+SphereRegion::SphereRegion(const BoundingBox& region, const int& dim)
+    : Region(region, dim) {
+    this->selecting = false;
     this->regionType = SPHERE;
 }

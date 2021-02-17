@@ -33,7 +33,7 @@ THook(void,
                                                             player) {
             auto* region = modInstance->playerRegionCache[player->getNameTag()];
             if (region && region->hasSelected()) {
-                auto dim = player->getDimensionID();
+                auto dim = region->getDimensionID();
                 auto lastPos =
                     modInstance->playerLastPosCache[player->getNameTag()];
                 spawnRectangleParticle(

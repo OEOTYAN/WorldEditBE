@@ -17,7 +17,8 @@ void ConvexRegion::updateBoundingBox() {
     });
 }
 
-ConvexRegion::ConvexRegion(const BoundingBox& region) : Region(region) {
+ConvexRegion::ConvexRegion(const BoundingBox& region, const int& dim)
+    : Region(region, dim) {
     vertices.clear();
     triangles.clear();
     vertexBacklog.clear();
@@ -114,7 +115,8 @@ bool ConvexRegion::addVertex(BlockPos vertex) {
     return true;
 }
 
-bool ConvexRegion::setMainPos(const BlockPos& pos) {
+bool ConvexRegion::setMainPos(const BlockPos& pos, const int& dim) {
+    dimensionID = dim;
     selecting = 1;
     hasLast = false;
     vertices.clear();
@@ -123,8 +125,8 @@ bool ConvexRegion::setMainPos(const BlockPos& pos) {
     return addVertex(pos);
 }
 
-bool ConvexRegion::setVicePos(const BlockPos& pos) {
-    if (!selecting) {
+bool ConvexRegion::setVicePos(const BlockPos& pos, const int& dim) {
+    if (!selecting || dim != dimensionID) {
         return false;
     }
     return addVertex(pos);

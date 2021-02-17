@@ -13,8 +13,9 @@ void ExpandRegion::updateBoundingBox() {
     boundingBox.maxPos.z = std::max({pos1.z, pos2.z});
 }
 
-bool ExpandRegion::setMainPos(const BlockPos& pos) {
+bool ExpandRegion::setMainPos(const BlockPos& pos, const int& dim) {
     selecting = true;
+    dimensionID = dim;
     pos1 = pos;
     pos2 = pos;
     mainPos = pos;
@@ -22,8 +23,8 @@ bool ExpandRegion::setMainPos(const BlockPos& pos) {
     return true;
 }
 
-bool ExpandRegion::setVicePos(const BlockPos& pos) {
-    if (!selecting) {
+bool ExpandRegion::setVicePos(const BlockPos& pos, const int& dim) {
+    if (!selecting || dim != dimensionID) {
         return false;
     }
     if (!pos.containedWithin(boundingBox.minPos, boundingBox.maxPos)) {
@@ -39,7 +40,7 @@ bool ExpandRegion::setVicePos(const BlockPos& pos) {
     return false;
 }
 
-ExpandRegion::ExpandRegion(const BoundingBox& region)
-    : Region(region), pos1(region.minPos), pos2(region.maxPos) {
+ExpandRegion::ExpandRegion(const BoundingBox& region, const int& dim)
+    : Region(region, dim), pos1(region.minPos), pos2(region.maxPos) {
     this->regionType = EXPAND;
 }

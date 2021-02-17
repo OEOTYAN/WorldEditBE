@@ -15,15 +15,17 @@ void WorldEditMod::useOnHook(Actor* player,
                              BlockPos& pos,
                              unsigned int facing,
                              const Vec3&) {
-    printf("use on %s\n", itemName.c_str());
-    if (itemName == "Cactus") {
+    // L_INFO("use on %s\n", itemName.c_str());
+    bool isWand = false;
+    auto item = player->getSelectedItem();
+    if (item->getId() == 271)
+        isWand = true;
+    if (isWand) {
         auto* region = this->playerRegionCache[player->getNameTag()];
-        this->playerLastPosCache[player->getNameTag()] = pos;
-        if (!region)
-            region = Region::createRegion(CUBOID, trapdoor::BoundingBox());
-        if (region->setVicePos(pos)) {
+        if (region && region->setVicePos(pos, player->getDimensionID())) {
             trapdoor::info(player, "set point 2 %d %d %d", pos.x, pos.y, pos.z);
             this->boxDisplayTick = 0;
+            this->playerLastPosCache[player->getNameTag()] = pos;
         } else {
             trapdoor::error(player, "fail to set point2");
         }
@@ -42,31 +44,32 @@ void WorldEditMod::registerCommands() {
         ->EXE({
             auto regionID = holder->getString();
             auto region = this->playerRegionCache[player->getNameTag()];
-            auto box = region ? region->getBoundBox() : trapdoor::BoundingBox();
+            auto box = trapdoor::BoundingBox();
+            auto dim = player->getDimensionID();
             if (regionID == "cuboid") {
                 this->playerRegionCache[player->getNameTag()] =
-                    Region::createRegion(CUBOID, box);
-                trapdoor::info(player, "region switch to cuboid");
+                    Region::createRegion(CUBOID, box, dim);
+                trapdoor::info(player, "§6region switch to cuboid");
             } else if (regionID == "expand") {
                 this->playerRegionCache[player->getNameTag()] =
-                    Region::createRegion(EXPAND, box);
-                trapdoor::info(player, "region switch to expand");
+                    Region::createRegion(EXPAND, box, dim);
+                trapdoor::info(player, "§6region switch to expand");
             } else if (regionID == "sphere") {
                 this->playerRegionCache[player->getNameTag()] =
-                    Region::createRegion(SPHERE, box);
-                trapdoor::info(player, "region switch to sphere");
+                    Region::createRegion(SPHERE, box, dim);
+                trapdoor::info(player, "§6region switch to sphere");
             } else if (regionID == "poly") {
                 this->playerRegionCache[player->getNameTag()] =
-                    Region::createRegion(POLY, box);
-                trapdoor::info(player, "region switch to poly");
+                    Region::createRegion(POLY, box, dim);
+                trapdoor::info(player, "§6region switch to poly");
             } else if (regionID == "convex") {
                 this->playerRegionCache[player->getNameTag()] =
-                    Region::createRegion(CONVEX, box);
-                trapdoor::info(player, "region switch to convex");
+                    Region::createRegion(CONVEX, box, dim);
+                trapdoor::info(player, "§6region switch to convex");
             } else if (regionID == "clear") {
                 this->playerRegionCache[player->getNameTag()]->selecting =
                     false;
-                trapdoor::info(player, "region clear");
+                trapdoor::info(player, "§6region clear");
             } else {
                 trapdoor::error(player, "error");
             }
@@ -77,10 +80,20 @@ void WorldEditMod::registerCommands() {
             auto blockID = holder->getInt();
             auto block = getBlockByID((BlockType)blockID);
             auto* region = this->playerRegionCache[player->getNameTag()];
+            int64_t num = 0;
             if (region && region->hasSelected()) {
-                region->forEachBlockInRegion([&](const BlockPos& pos) {
-                    player->getBlockSource()->setBlock(&pos, block);
-                });
+                if (region->getDimensionID() != player->getDimensionID()) {
+                    trapdoor::error(player, "请到选区对应的维度");
+                } else {
+                    region->forEachBlockInRegion([&](const BlockPos& pos) {
+                        player->getBlockSource()->setBlock(&pos, block);
+                        num += 1;
+                    });
+                    if (num <= 1)
+                        trapdoor::evalMsg("§6%lld block has changed", num);
+                    else
+                        trapdoor::evalMsg("§6%lld blocks had changed", num);
+                }
             } else {
                 trapdoor::error(player, "请先划定选区");
             }
@@ -89,26 +102,24 @@ void WorldEditMod::registerCommands() {
         );
     this->commandManager.registerCmd("/pos2", "设置点2")->EXE({
         auto pos = player->getStandPosition();
-        this->playerLastPosCache[player->getNameTag()] = pos;
         auto* region = this->playerRegionCache[player->getNameTag()];
-        if (!region)
-            region = Region::createRegion(CUBOID, trapdoor::BoundingBox());
-        if (region->setVicePos(pos)) {
-            trapdoor::info(player, "set point 2 %d %d %d", pos.x, pos.y, pos.z);
+        if (region && region->setVicePos(pos, player->getDimensionID())) {
+            trapdoor::info(player, "§6set point 2 %d %d %d", pos.x, pos.y,
+                           pos.z);
             this->boxDisplayTick = 0;
+            this->playerLastPosCache[player->getNameTag()] = pos;
         } else {
             trapdoor::error(player, "fail to set point2");
         }
     });
     this->commandManager.registerCmd("/pos1", "设置点1")->EXE({
         auto pos = player->getStandPosition();
-        this->playerMainPosCache[player->getNameTag()] = pos;
         auto* region = this->playerRegionCache[player->getNameTag()];
-        if (!region)
-            region = Region::createRegion(CUBOID, trapdoor::BoundingBox());
-        if (region->setMainPos(pos)) {
-            trapdoor::info(player, "set point1 %d %d %d", pos.x, pos.y, pos.z);
+        if (region && region->setMainPos(pos, player->getDimensionID())) {
+            trapdoor::info(player, "§6set point1 %d %d %d", pos.x, pos.y,
+                           pos.z);
             this->boxDisplayTick = 0;
+            this->playerMainPosCache[player->getNameTag()] = pos;
         } else {
             trapdoor::error(player, "fail to set point1");
         }

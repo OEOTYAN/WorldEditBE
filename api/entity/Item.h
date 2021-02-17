@@ -11,6 +11,7 @@
 
 namespace trapdoor {
     struct ItemStackBase {
+        short getId();
         std::string getItemName();
 
         int getNum();

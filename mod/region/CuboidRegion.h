@@ -13,16 +13,18 @@ class CuboidRegion : public Region {
     BlockPos vicePos;
     void updateBoundingBox() override;
 
-    explicit CuboidRegion(const BoundingBox& region);
+    explicit CuboidRegion(const BoundingBox& region, const int& dim);
 
-    bool setMainPos(const BlockPos& pos) override;
+    bool setMainPos(const BlockPos& pos, const int& dim) override;
 
-    bool setVicePos(const BlockPos& pos) override;
+    bool setVicePos(const BlockPos& pos, const int& dim) override;
 
     // void forEachBlockInRegion(const std::function<void(const BlockPos &)>
     // &todo) override;
 
-    Region* createRegion(RegionType type, trapdoor::BoundingBox boundingBox);
+    Region* createRegion(RegionType type,
+                         trapdoor::BoundingBox boundingBox,
+                         int dim);
 };
 
 #endif  // WORLDEDIT_CUBOIDREGION_H

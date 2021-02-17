@@ -101,6 +101,14 @@ namespace trapdoor {
             this);
     }
 
+    ItemStackBase* Actor::getSelectedItem() {
+        return SYM_CALL(
+            ItemStackBase * (*)(Actor*),
+            SymHook::
+                MSSYM_B1QE15getSelectedItemB1AA6PlayerB2AAE17QEBAAEBVItemStackB2AAA2XZ,
+            this);
+    }
+
     unsigned int Actor::getSelectSlot() {
         //!这个api是有问题的
         return 0;

@@ -1,8 +1,11 @@
-
+//
+// Created by xhy on 2020/10/31.
+//
 
 #ifndef TRAPDOOR_ACTOR_H
 #define TRAPDOOR_ACTOR_H
 
+#include "Item.h"
 #include "graphics/Vec3.h"
 #include <vector>
 #include <string>
@@ -78,6 +81,9 @@ namespace trapdoor {
 
         //获取玩家背包
         PlayerInventory* getPlayerInventory();
+
+        //获取玩家手持物品
+        ItemStackBase* getSelectedItem();
 
         unsigned int getSelectSlot();
 

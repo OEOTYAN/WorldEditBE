@@ -67,6 +67,17 @@ namespace SymHook {
     // [����] ?tick@Level@@UEAAXXZ
     constexpr RVA MSSYM_B1QA4tickB1AA5LevelB2AAA7UEAAXXZ = 0x00A75A30;
 
+    // [ԭ��] public: short __cdecl ItemStackBase::getId(void)const __ptr64
+    // [����] ?getId@ItemStackBase@@QEBAFXZ
+    constexpr RVA MSSYM_B1QA5getIdB1AE13ItemStackBaseB2AAA7QEBAFXZ = 0x007F98E0;
+
+    // [ԭ��] public: class ItemStack const & __ptr64 __cdecl
+    // Player::getSelectedItem(void)const __ptr64 [����]
+    // ?getSelectedItem@Player@@QEBAAEBVItemStack@@XZ
+    constexpr RVA
+        MSSYM_B1QE15getSelectedItemB1AA6PlayerB2AAE17QEBAAEBVItemStackB2AAA2XZ =
+            0x00720BC0;
+
     // [ԭ��] public: void __cdecl LevelChunk::tick(class BlockSource &
     // __ptr64,struct Tick const & __ptr64) __ptr64 [����]
     // ?tick@LevelChunk@@QEAAXAEAVBlockSource@@AEBUTick@@@Z
@@ -119,7 +130,8 @@ namespace SymHook {
         MSSYM_B1QA4tickB1AE13EntitySystemsB2AAE23QEAAXAEAVEntityRegistryB3AAAA1Z =
             0x002B81D0;
 
-    // [ԭ��] public: virtual void __cdecl BlockActor::tick(class BlockSource
+    // [ԭ��] public: virtual void __cdecl BlockActor::tick(class
+    // BlockSource
     // &
     // __ptr64) __ptr64 [����] ?tick@BlockActor@@UEAAXAEAVBlockSource@@@Z
     constexpr RVA
@@ -221,7 +233,8 @@ namespace SymHook {
         MSSYM_B1QA8setBlockB1AE11BlockSourceB2AAA4QEAAB1UE13NHHHAEBVBlockB2AAA1HB1AA1Z =
             0x00A16490;
 
-    // [ԭ��] public: bool __cdecl BlockSource::setBlock(class BlockPos const
+    // [ԭ��] public: bool __cdecl BlockSource::setBlock(class BlockPos
+    // const
     // &
     // __ptr64,class Block const & __ptr64,int,struct ActorBlockSyncMessage
     // const * __ptr64) __ptr64 [����]
@@ -230,7 +243,8 @@ namespace SymHook {
         MSSYM_B1QA8setBlockB1AE11BlockSourceB2AAA4QEAAB1UE13NAEBVBlockPosB2AAA9AEBVBlockB2AAE26HPEBUActorBlockSyncMessageB3AAAA1Z =
             0x00A164E0;
 
-    // [ԭ��] private: virtual bool __cdecl ShovelItem::_useOn(class ItemStack
+    // [ԭ��] private: virtual bool __cdecl ShovelItem::_useOn(class
+    // ItemStack
     // &
     // __ptr64,class Actor & __ptr64,class BlockPos,unsigned
     // char,float,float,float)const __ptr64 [����]
@@ -262,9 +276,12 @@ namespace SymHook {
         MSSYM_B2QUE20destroyBlockInternalB1AA8GameModeB2AAA4AEAAB1UE13NAEBVBlockPosB2AAA1EB1AA1Z =
             0x00775EB0;
 
-// [ԭ��] public: virtual void __cdecl ServerScoreboard::onPlayerJoined(class Player const & __ptr64) __ptr64
-// [����] ?onPlayerJoined@ServerScoreboard@@UEAAXAEBVPlayer@@@Z
-constexpr RVA MSSYM_B1QE14onPlayerJoinedB1AE16ServerScoreboardB2AAE15UEAAXAEBVPlayerB3AAAA1Z = 0x00BA1200;
+    // [ԭ��] public: virtual void __cdecl
+    // ServerScoreboard::onPlayerJoined(class Player const & __ptr64) __ptr64
+    // [����] ?onPlayerJoined@ServerScoreboard@@UEAAXAEBVPlayer@@@Z
+    constexpr RVA
+        MSSYM_B1QE14onPlayerJoinedB1AE16ServerScoreboardB2AAE15UEAAXAEBVPlayerB3AAAA1Z =
+            0x00BA1200;
 
     // [ԭ��] public: class std::basic_string<char,struct
     // std::char_traits<char>,class std::allocator<char> > __cdecl
@@ -314,7 +331,8 @@ constexpr RVA MSSYM_B1QE14onPlayerJoinedB1AE16ServerScoreboardB2AAE15UEAAXAEBVPl
         MSSYM_B1QE25tryGetStateFromLegacyDataB1AE11BlockLegacyB2AAE13QEBAPEBVBlockB2AAA1GB1AA1Z =
             0x008D8BF0;
 
-    // [ԭ��] private: void __cdecl HopperBlockActor::_tick(class BlockSource
+    // [ԭ��] private: void __cdecl HopperBlockActor::_tick(class
+    // BlockSource
     // &
     // __ptr64,int) __ptr64 [����]
     // ?_tick@HopperBlockActor@@AEAAXAEAVBlockSource@@H@Z
@@ -329,7 +347,8 @@ constexpr RVA MSSYM_B1QE14onPlayerJoinedB1AE16ServerScoreboardB2AAE15UEAAXAEBVPl
         MSSYM_B1QA8getBiomeB1AE11BlockSourceB2AAE13QEAAAEAVBiomeB2AAE12AEBVBlockPosB3AAAA1Z =
             0x00A1CFE0;
 
-    // [ԭ��] public: void __cdecl Village::tick(struct Tick,class BlockSource
+    // [ԭ��] public: void __cdecl Village::tick(struct Tick,class
+    // BlockSource
     // &
     // __ptr64) __ptr64 [����] ?tick@Village@@QEAAXUTick@@AEAVBlockSource@@@Z
     constexpr RVA
@@ -442,7 +461,8 @@ constexpr RVA MSSYM_B1QE14onPlayerJoinedB1AE16ServerScoreboardB2AAE15UEAAXAEBVPl
         MSSYM_B1QE23findNextSpawnBlockUnderB1AA7SpawnerB2AAA2SAB1UE16NAEBVBlockSourceB2AAE12AEAVBlockPosB2AAE14W4MaterialTypeB2AAE24W4SpawnBlockRequirementsB3AAAA1Z =
             0x00B3A9D0;
 
-    // [ԭ��] protected: bool __cdecl Hopper::_tryMoveInItem(class BlockSource
+    // [ԭ��] protected: bool __cdecl Hopper::_tryMoveInItem(class
+    // BlockSource
     // &
     // __ptr64,class Container & __ptr64,class ItemStack & __ptr64,int,int,int)
     // __ptr64 [����]
@@ -583,7 +603,8 @@ constexpr RVA MSSYM_B1QE14onPlayerJoinedB1AE16ServerScoreboardB2AAE15UEAAXAEBVPl
         MSSYM_B1QE12getBiomeTypeB1AA5BiomeB2AAA4QEBAB1QE20AW4VanillaBiomeTypesB2AAA2XZ =
             0x00840C80;
 
-    // [ԭ��] public: virtual void __cdecl GrassBlock::tick(class BlockSource
+    // [ԭ��] public: virtual void __cdecl GrassBlock::tick(class
+    // BlockSource
     // &
     // __ptr64,class BlockPos const & __ptr64,class Random & __ptr64)const
     // __ptr64 [����]
@@ -844,7 +865,8 @@ constexpr RVA MSSYM_B1QE14onPlayerJoinedB1AE16ServerScoreboardB2AAE15UEAAXAEBVPl
     // [����] ?kill@Actor@@UEAAXXZ
     constexpr RVA MSSYM_B1QA4killB1AA5ActorB2AAA7UEAAXXZ = 0x00567540;
 
-    // [ԭ��] public: virtual void __cdecl BlockActor::tick(class BlockSource
+    // [ԭ��] public: virtual void __cdecl BlockActor::tick(class
+    // BlockSource
     // &
     // __ptr64) __ptr64 [����] ?tick@BlockActor@@UEAAXAEAVBlockSource@@@Z
 

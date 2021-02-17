@@ -16,21 +16,22 @@ void Region::forEachBlockInRegion(
             }
 }
 
-Region::Region(const trapdoor::BoundingBox& b) : boundingBox(b) {}
+Region::Region(const trapdoor::BoundingBox& b, int dim)
+    : boundingBox(b), dimensionID(dim) {}
 
-Region* Region::createRegion(RegionType type, const BoundingBox& box) {
+Region* Region::createRegion(RegionType type, const BoundingBox& box, int dim) {
     switch (type) {
         case CUBOID:
-            return new CuboidRegion(box);
+            return new CuboidRegion(box, dim);
         case EXPAND:
-            return new ExpandRegion(box);
+            return new ExpandRegion(box, dim);
         case SPHERE:
-            return new SphereRegion(box);
+            return new SphereRegion(box, dim);
         case POLY:  // NOLINT
-            return new PolyRegion(box);
+            return new PolyRegion(box, dim);
         case CONVEX:
-            return new ConvexRegion(box);
+            return new ConvexRegion(box, dim);
         default:
-            return new CuboidRegion(box);
+            return new CuboidRegion(box, dim);
     }
 }

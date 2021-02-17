@@ -14,11 +14,11 @@ class ExpandRegion : public Region {
     BlockPos mainPos;
     void updateBoundingBox() override;
 
-    explicit ExpandRegion(const BoundingBox& region);
+    explicit ExpandRegion(const BoundingBox& region, const int& dim);
 
-    bool setMainPos(const BlockPos& pos) override;
+    bool setMainPos(const BlockPos& pos, const int& dim) override;
 
-    bool setVicePos(const BlockPos& pos) override;
+    bool setVicePos(const BlockPos& pos, const int& dim) override;
 };
 
 #endif  // WORLDEDIT_EXPANDREGION_H

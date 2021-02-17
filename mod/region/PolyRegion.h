@@ -20,11 +20,11 @@ class PolyRegion : public Region {
 
     void updateBoundingBox() override;
 
-    explicit PolyRegion(const BoundingBox& region);
+    explicit PolyRegion(const BoundingBox& region, const int& dim);
 
-    bool setMainPos(const BlockPos& pos) override;
+    bool setMainPos(const BlockPos& pos, const int& dim) override;
 
-    bool setVicePos(const BlockPos& pos) override;
+    bool setVicePos(const BlockPos& pos, const int& dim) override;
 
     bool isInRegion(const BlockPos& pos) override;
 };

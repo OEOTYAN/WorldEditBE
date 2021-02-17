@@ -18,26 +18,28 @@ void PolyRegion::updateBoundingBox() {
         boundingBox.maxPos.z = std::max(boundingBox.maxPos.z, value.z);
     });
 }
-PolyRegion::PolyRegion(const BoundingBox& region) : Region(region) {
+PolyRegion::PolyRegion(const BoundingBox& region, const int& dim)
+    : Region(region, dim) {
     while (points.size() != 0) {
         points.pop_back();
     }
     this->regionType = POLY;
 }
-bool PolyRegion::setMainPos(const BlockPos& pos) {
+bool PolyRegion::setMainPos(const BlockPos& pos, const int& dim) {
     mainPos = pos;
+    dimensionID = dim;
     selecting = 1;
     minY = pos.y;
     maxY = pos.y;
-    while (points.size() != 0) {
+    while (!points.empty()) {
         points.pop_back();
     }
     points.push_back({pos.x, pos.z});
     updateBoundingBox();
     return true;
 }
-bool PolyRegion::setVicePos(const BlockPos& pos) {
-    if (!selecting) {
+bool PolyRegion::setVicePos(const BlockPos& pos, const int& dim) {
+    if (!selecting || dim != dimensionID) {
         return false;
     }
     for (auto iter = points.cbegin(); iter != points.cend(); iter++) {

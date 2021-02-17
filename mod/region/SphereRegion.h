@@ -8,20 +8,21 @@
 #include "Region.h"
 
 class SphereRegion : public Region {
-    BlockPos center;
+    BlockPos center = {0, -65, 0};
+    float radius = 0.5;
 
    public:
-    float radius{};
-
     void updateBoundingBox() override;
 
-    explicit SphereRegion(const BoundingBox& region);
+    explicit SphereRegion(const BoundingBox& region, const int& dim);
 
-    bool setMainPos(const BlockPos& pos) override;
+    bool setMainPos(const BlockPos& pos, const int& dim) override;
 
     BlockPos getCenter() { return center; };
 
-    bool setVicePos(const BlockPos& pos) override;
+    float getRadius() { return radius; };
+
+    bool setVicePos(const BlockPos& pos, const int& dim) override;
 
     bool isInRegion(const BlockPos& pos) override;
 };

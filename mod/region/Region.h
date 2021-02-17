@@ -20,23 +20,25 @@ enum RegionType {
 class Region {
    protected:
     RegionType regionType = CUBOID;
+    int dimensionID;
     BoundingBox boundingBox{};
 
    public:
     bool selecting = false;
-    explicit Region(const trapdoor::BoundingBox& b);
+    explicit Region(const trapdoor::BoundingBox& b, int dim);
 
     trapdoor::BoundingBox getBoundBox() const { return this->boundingBox; }
     RegionType getRegionType() const { return this->regionType; }
+    int getDimensionID() const { return this->dimensionID; }
 
     virtual ~Region() = default;
 
     virtual void updateBoundingBox() = 0;
 
     // virtual void shift(const BlockPos& change) = 0;
-    virtual bool setMainPos(const BlockPos& pos) = 0;
+    virtual bool setMainPos(const BlockPos& pos , const int& dim) = 0;
 
-    virtual bool setVicePos(const BlockPos& pos) = 0;
+    virtual bool setVicePos(const BlockPos& pos, const int& dim) = 0;
 
     virtual bool isInRegion(const BlockPos& pos) { return true; };
 
@@ -46,7 +48,8 @@ class Region {
     inline bool hasSelected() { return this->selecting; }
 
     static Region* createRegion(RegionType type,
-                                const trapdoor::BoundingBox& box);
+                                const trapdoor::BoundingBox& box,
+                                int dim);
 };
 
 #endif  // WORLDEDIT_REGION_H

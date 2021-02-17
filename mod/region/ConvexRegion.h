@@ -72,11 +72,11 @@ class ConvexRegion : public Region {
 
     void updateBoundingBox() override;
 
-    explicit ConvexRegion(const BoundingBox& region);
+    explicit ConvexRegion(const BoundingBox& region,const int& dim);
 
-    bool setMainPos(const BlockPos& pos) override;
+    bool setMainPos(const BlockPos& pos, const int& dim) override;
 
-    bool setVicePos(const BlockPos& pos) override;
+    bool setVicePos(const BlockPos& pos, const int& dim) override;
 
     bool isInRegion(const BlockPos& pos) override;
 };

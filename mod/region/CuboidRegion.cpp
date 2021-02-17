@@ -13,26 +13,34 @@ void CuboidRegion::updateBoundingBox() {
     boundingBox.maxPos.z = std::max({mainPos.z, vicePos.z});
 }
 
-bool CuboidRegion::setMainPos(const BlockPos& pos) {
+bool CuboidRegion::setMainPos(const BlockPos& pos, const int& dim) {
     if (mainPos != pos) {
-        mainPos = pos;
         if (!selecting) {
+            dimensionID = dim;
             selecting = true;
             vicePos = pos;
+        } else {
+            if (dim != dimensionID)
+                return false;
         }
+        mainPos = pos;
         updateBoundingBox();
         return true;
     }
     return false;
 }
 
-bool CuboidRegion::setVicePos(const BlockPos& pos) {
+bool CuboidRegion::setVicePos(const BlockPos& pos, const int& dim) {
     if (vicePos != pos) {
-        vicePos = pos;
         if (!selecting) {
+            dimensionID = dim;
             selecting = true;
             mainPos = pos;
+        } else {
+            if (dim != dimensionID)
+                return false;
         }
+        vicePos = pos;
         updateBoundingBox();
         return true;
     }
@@ -50,7 +58,8 @@ bool CuboidRegion::setVicePos(const BlockPos& pos) {
 //            }
 //}
 
-CuboidRegion::CuboidRegion(const BoundingBox& region) : Region(region) {
+CuboidRegion::CuboidRegion(const BoundingBox& region, const int& dim)
+    : Region(region, dim) {
     this->regionType = CUBOID;
     this->mainPos = region.minPos;
     this->vicePos = region.maxPos;
