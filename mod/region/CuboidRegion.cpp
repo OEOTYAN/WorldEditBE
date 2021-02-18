@@ -52,7 +52,7 @@ bool CuboidRegion::setVicePos(const BlockPos& pos, const int& dim) {
 //    for (int x = mainPos.x; x <= vicePos.x; x++)
 //        for (int y = mainPos.y; y <= vicePos.y; y++)
 //            for (int z = mainPos.z; z <= vicePos.z; z++) {
-//                if (isInRegion({x, y, z})) {
+//                if (contains({x, y, z})) {
 //                    todo({x, y, z});
 //                }
 //            }

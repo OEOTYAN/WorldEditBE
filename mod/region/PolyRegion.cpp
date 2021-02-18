@@ -73,7 +73,7 @@ void PolyRegion::drawRegion() {
     }
 };
 
-bool PolyRegion::isInRegion(const BlockPos& pos) {
+bool PolyRegion::contains(const BlockPos& pos) {
     if (points.size() < 3 || pos.y < minY || pos.y > maxY) {
         return false;
     }

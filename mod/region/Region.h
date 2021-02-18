@@ -41,7 +41,7 @@ class Region {
 
     virtual bool setVicePos(const BlockPos& pos, const int& dim) = 0;
 
-    virtual bool isInRegion(const BlockPos& pos) { return true; };
+    virtual bool contains(const BlockPos& pos) { return true; };
 
     virtual void forEachBlockInRegion(
         const std::function<void(const BlockPos&)>& todo);

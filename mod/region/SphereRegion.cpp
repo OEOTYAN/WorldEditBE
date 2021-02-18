@@ -36,7 +36,7 @@ bool SphereRegion::setVicePos(const BlockPos& pos, const int& dim) {
     return false;
 }
 
-bool SphereRegion::isInRegion(const BlockPos& pos) {
+bool SphereRegion::contains(const BlockPos& pos) {
     return pos.distanceTo(center) <= radius;
 }
 

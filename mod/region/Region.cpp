@@ -10,7 +10,7 @@ void Region::forEachBlockInRegion(
     for (int x = boundingBox.minPos.x; x <= boundingBox.maxPos.x; x++)
         for (int y = boundingBox.minPos.y; y <= boundingBox.maxPos.y; y++)
             for (int z = boundingBox.minPos.z; z <= boundingBox.maxPos.z; z++) {
-                if (isInRegion({x, y, z})) {
+                if (contains({x, y, z})) {
                     todo({x, y, z});
                 }
             }

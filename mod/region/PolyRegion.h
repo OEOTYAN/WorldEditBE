@@ -28,7 +28,7 @@ class PolyRegion : public Region {
 
     bool setVicePos(const BlockPos& pos, const int& dim) override;
 
-    bool isInRegion(const BlockPos& pos) override;
+    bool contains(const BlockPos& pos) override;
 };
 
 #endif  // WORLDEDIT_POLYREGION_H

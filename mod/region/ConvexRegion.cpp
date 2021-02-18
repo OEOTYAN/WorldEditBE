@@ -147,7 +147,7 @@ bool ConvexRegion::setVicePos(const BlockPos& pos, const int& dim) {
     return addVertex(pos);
 }
 
-bool ConvexRegion::isInRegion(const BlockPos& pos) {
+bool ConvexRegion::contains(const BlockPos& pos) {
     if (triangles.empty()) {
         return false;
     }

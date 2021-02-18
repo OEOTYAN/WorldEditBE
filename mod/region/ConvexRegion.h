@@ -87,7 +87,7 @@ class ConvexRegion : public Region {
 
     bool setVicePos(const BlockPos& pos, const int& dim) override;
 
-    bool isInRegion(const BlockPos& pos) override;
+    bool contains(const BlockPos& pos) override;
 };
 
 #endif  // WORLDEDIT_CONVEXREGION_H
