@@ -56,11 +56,8 @@ THook(
     auto player = reinterpret_cast<trapdoor::Actor*>(*ptr);
     // int slot = player->getPlayerInventory()->containsItem("Wooden Pickaxe");
     //  if (slot > -1) {
-    bool isWand = false;
     auto item = player->getSelectedItem();
-    if (item->getId() == 271)
-        isWand = true;
-    if (isWand) {
+    if (item->getId() == 271) {
         auto modInstance = trapdoor::bdsMod->asInstance<WorldEditMod>();
         auto block = player->getBlockSource()->getBlock(pos->x, pos->y, pos->z);
         original(self, pos, a3, a4);
@@ -71,6 +68,7 @@ THook(
                            pos->z);
             modInstance->boxDisplayTick = 0;
             modInstance->playerMainPosCache[player->getNameTag()] = *pos;
+            modInstance->playerLastPosCache.erase(player->getNameTag());
         } else {
             trapdoor::error(player, "fail to set point1");
         }

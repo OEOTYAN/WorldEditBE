@@ -16,6 +16,11 @@ void Region::forEachBlockInRegion(
             }
 }
 
+void Region::drawRegion() {
+    spawnRectangleParticle(this->getBoundBox().toAABB(), GRAPHIC_COLOR::YELLOW,
+                           dimensionID);
+};
+
 Region::Region(const trapdoor::BoundingBox& b, int dim)
     : boundingBox(b), dimensionID(dim) {}
 

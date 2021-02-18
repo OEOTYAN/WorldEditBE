@@ -45,3 +45,6 @@ SphereRegion::SphereRegion(const BoundingBox& region, const int& dim)
     this->selecting = false;
     this->regionType = SPHERE;
 }
+void SphereRegion::drawRegion() {
+    return;
+};

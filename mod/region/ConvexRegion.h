@@ -20,9 +20,10 @@ class Edge {
     Vec3 start;
     Vec3 end;
 
-    explicit Edge(Vec3 _start, Vec3 _end) : start(_start), end(_end){};
+    explicit Edge(const Vec3& _start, const Vec3& _end)
+        : start(_start), end(_end){};
     bool operator==(const Edge& other) const;
-    Triangle createTriangle(Vec3 vertex);
+    Triangle createTriangle(const Vec3&);
 };
 class _hash {
    public:
@@ -45,34 +46,42 @@ class Triangle {
     float maxDotProduct;
 
     Triangle() = default;
-    Triangle(Vec3 v0, Vec3 v1, Vec3 v2);
-    Vec3 getVertex(int index) { return vertices[index]; };
-    Edge getEdge(int index);
-    bool below(Vec3 pt) { return normal.dot(pt) < maxDotProduct; }
-    bool above(Vec3 pt) { return normal.dot(pt) > maxDotProduct; }
+    Triangle(const Vec3& v0, const Vec3& v1, const Vec3& v2);
+    Vec3 getVertex(const int& index) const { return vertices[index]; };
+    Edge getEdge(const int& index);
+    bool below(const Vec3& pt) { return normal.dot(pt) < maxDotProduct; }
+    bool above(const Vec3& pt) { return normal.dot(pt) > maxDotProduct; }
     bool operator==(const Triangle& v) const;
 };
 
 class ConvexRegion : public Region {
    private:
-    bool addVertex(BlockPos vertex);
-    bool containsRaw(Vec3 pt);
+    bool addVertex(const BlockPos& vertex);
 
-   public:
+    bool containsRaw(const Vec3& pt);
+
+    void updateEdges();
+
     std::unordered_set<BlockPos, _hash> vertices;
 
     std::vector<Triangle> triangles;
+
+    std::unordered_set<Edge, _hash> edges;
 
     std::unordered_set<BlockPos, _hash> vertexBacklog;
 
     BlockPos centerAccum;
 
     Triangle lastTriangle;
+
     bool hasLast = false;
 
+   public:
     void updateBoundingBox() override;
 
-    explicit ConvexRegion(const BoundingBox& region,const int& dim);
+    explicit ConvexRegion(const BoundingBox& region, const int& dim);
+
+    void drawRegion() override;
 
     bool setMainPos(const BlockPos& pos, const int& dim) override;
 

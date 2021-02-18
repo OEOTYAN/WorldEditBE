@@ -22,6 +22,8 @@ class PolyRegion : public Region {
 
     explicit PolyRegion(const BoundingBox& region, const int& dim);
 
+    void drawRegion() override;
+
     bool setMainPos(const BlockPos& pos, const int& dim) override;
 
     bool setVicePos(const BlockPos& pos, const int& dim) override;

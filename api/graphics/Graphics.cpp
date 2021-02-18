@@ -197,4 +197,40 @@ namespace trapdoor {
             spawnParticle(points.first, particleBackTypeInv, dimType);
         }
     }
+    void drawObliqueLine(Vec3 start,
+                         Vec3 end,
+                         GRAPHIC_COLOR color,
+                         int dimType) {
+        std::string str = "worldedit:point";
+        std::string str_back = "worldedit:point_back";
+        switch (color) {
+            case GRAPHIC_COLOR::WHITE:
+                str += "W";
+                str_back += "W";
+                break;
+            case GRAPHIC_COLOR::RED:
+                str += "R";
+                str_back += "R";
+                break;
+            case GRAPHIC_COLOR::YELLOW:
+                str += "Y";
+                str_back += "Y";
+                break;
+            case GRAPHIC_COLOR::BLUE:
+                str += "B";
+                str_back += "B";
+                break;
+            case GRAPHIC_COLOR::GREEN:
+                str += "G";
+                str_back += "G";
+                break;
+        }
+        int counter = 0;
+        for (Vec3 i = start; counter < (end - start).length() * 10;
+             i = i + (end - start).normalize() * 0.1f) {
+            counter += 1;
+            spawnParticle(i + Vec3(0.5f), str, dimType);
+            spawnParticle(i + Vec3(0.5f), str_back, dimType);
+        }
+    }
 }  // namespace trapdoor

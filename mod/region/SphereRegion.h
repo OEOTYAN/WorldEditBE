@@ -18,9 +18,11 @@ class SphereRegion : public Region {
 
     bool setMainPos(const BlockPos& pos, const int& dim) override;
 
-    BlockPos getCenter() { return center; };
+    BlockPos getCenter() const { return center; };
 
-    float getRadius() { return radius; };
+    void drawRegion() override;
+
+    float getRadius() const { return radius; };
 
     bool setVicePos(const BlockPos& pos, const int& dim) override;
 

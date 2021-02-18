@@ -15,11 +15,7 @@ void WorldEditMod::useOnHook(Actor* player,
                              BlockPos& pos,
                              unsigned int facing,
                              const Vec3&) {
-    bool isWand = false;
-    auto item = player->getSelectedItem();
-    if (item->getId() == 271)
-        isWand = true;
-    if (isWand) {
+    if (player->getSelectedItem()->getId() == 271) {
         auto* region = this->playerRegionCache[player->getNameTag()];
         if (region && region->setVicePos(pos, player->getDimensionID())) {
             trapdoor::info(player, "set point 2 %d %d %d", pos.x, pos.y, pos.z);
@@ -119,6 +115,7 @@ void WorldEditMod::registerCommands() {
                            pos.z);
             this->boxDisplayTick = 0;
             this->playerMainPosCache[player->getNameTag()] = pos;
+            this->playerLastPosCache.erase(player->getNameTag());
         } else {
             trapdoor::error(player, "fail to set point1");
         }

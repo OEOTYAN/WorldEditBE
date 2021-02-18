@@ -52,6 +52,27 @@ bool PolyRegion::setVicePos(const BlockPos& pos, const int& dim) {
     updateBoundingBox();
     return true;
 }
+
+void PolyRegion::drawRegion() {
+    auto size = points.size();
+    for (int i = 0; i < size; i++) {
+        spawnRectangleParticle(
+            {Vec3(points[i].x, minY, points[i].z),
+             Vec3(points[i].x, maxY, points[i].z) + Vec3(1, 1, 1)},
+            GRAPHIC_COLOR::GREEN, dimensionID);
+    }
+    for (int y : {minY, maxY}) {
+        for (int i = 0; i < size - 1; i++) {
+            drawObliqueLine(Vec3(points[i].x, y, points[i].z),
+                            Vec3(points[i + 1].x, y, points[i + 1].z),
+                            GRAPHIC_COLOR::YELLOW, dimensionID);
+        }
+        drawObliqueLine(Vec3(points[0].x, y, points[0].z),
+                        Vec3(points[size - 1].x, y, points[size - 1].z),
+                        GRAPHIC_COLOR::YELLOW, dimensionID);
+    }
+};
+
 bool PolyRegion::isInRegion(const BlockPos& pos) {
     if (points.size() < 3 || pos.y < minY || pos.y > maxY) {
         return false;

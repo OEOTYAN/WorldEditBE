@@ -17,17 +17,30 @@ void ConvexRegion::updateBoundingBox() {
     });
 }
 
+void ConvexRegion::updateEdges() {
+    edges.clear();
+    for (auto triangle : triangles) {
+        for (int i = 0; i < 3; ++i) {
+            Edge edge = triangle.getEdge(i);
+            if (edges.find(edge) == edges.end()) {
+                edges.insert(edge);
+            }
+        }
+    }
+}
+
 ConvexRegion::ConvexRegion(const BoundingBox& region, const int& dim)
     : Region(region, dim) {
     vertices.clear();
     triangles.clear();
     vertexBacklog.clear();
+    edges.clear();
     hasLast = false;
     this->regionType = CONVEX;
 }
 
-bool ConvexRegion::containsRaw(Vec3 pt) {
-    if (lastTriangle.above(pt) && hasLast == true) {
+bool ConvexRegion::containsRaw(const Vec3& pt) {
+    if (lastTriangle.above(pt) && hasLast) {
         return false;
     }
 
@@ -46,7 +59,7 @@ bool ConvexRegion::containsRaw(Vec3 pt) {
     return true;
 }
 
-bool ConvexRegion::addVertex(BlockPos vertex) {
+bool ConvexRegion::addVertex(const BlockPos& vertex) {
     hasLast = false;
     if (vertices.find(vertex) != vertices.end()) {
         return false;
@@ -74,10 +87,11 @@ bool ConvexRegion::addVertex(BlockPos vertex) {
         case 3: {
             std::vector<BlockPos> v;
             v.assign(vertices.begin(), vertices.end());
-            triangles.push_back(
+            triangles.emplace_back(
                 Triangle(v[0].toVec3(), v[1].toVec3(), v[2].toVec3()));
-            triangles.push_back(
+            triangles.emplace_back(
                 Triangle(v[0].toVec3(), v[2].toVec3(), v[1].toVec3()));
+            updateEdges();
             return true;
         };
         default:
@@ -99,7 +113,7 @@ bool ConvexRegion::addVertex(BlockPos vertex) {
             ++iter;
     }
     for (Edge edge : borderEdges) {
-        triangles.push_back(edge.createTriangle(vertexD));
+        triangles.emplace_back(edge.createTriangle(vertexD));
     }
 
     if (!vertexBacklog.empty()) {
@@ -111,7 +125,7 @@ bool ConvexRegion::addVertex(BlockPos vertex) {
         }
         vertices.insert(vertex);
     }
-
+    updateEdges();
     return true;
 }
 
@@ -122,6 +136,7 @@ bool ConvexRegion::setMainPos(const BlockPos& pos, const int& dim) {
     vertices.clear();
     triangles.clear();
     vertexBacklog.clear();
+    edges.clear();
     return addVertex(pos);
 }
 
@@ -144,16 +159,28 @@ bool ConvexRegion::isInRegion(const BlockPos& pos) {
     return containsRaw(pos.toVec3());
 }
 
+void ConvexRegion::drawRegion() {
+    auto size = vertices.size();
+    for (auto vertice : vertices)
+        spawnRectangleParticle(
+            {Vec3(vertice.x, vertice.y, vertice.z),
+             Vec3(vertice.x, vertice.y, vertice.z) + Vec3(1.0f)},
+            GRAPHIC_COLOR::GREEN, dimensionID);
+    for (auto edge : edges)
+        drawObliqueLine(edge.start, edge.end, GRAPHIC_COLOR::YELLOW,
+                        dimensionID);
+};
+
 bool Edge::operator==(const Edge& other) const {
     return (start == other.start && end == other.end) ||
            (end == other.start && start == other.end);
 }
 
-Triangle Edge::createTriangle(Vec3 vertex) {
+Triangle Edge::createTriangle(const Vec3& vertex) {
     return Triangle(start, end, vertex);
 }
 
-Triangle::Triangle(Vec3 v0, Vec3 v1, Vec3 v2) {
+Triangle::Triangle(const Vec3& v0, const Vec3& v1, const Vec3& v2) {
     vertices[0] = v0;
     vertices[1] = v1;
     vertices[2] = v2;
@@ -165,7 +192,7 @@ bool Triangle::operator==(const Triangle& v) const {
     return (v.maxDotProduct == maxDotProduct) && (v.normal == normal) &&
            (v.vertices == vertices);
 }
-Edge Triangle::getEdge(int index) {
+Edge Triangle::getEdge(const int& index) {
     if (index == 2)
         return Edge(vertices[index], vertices[0]);
     return Edge(vertices[index], vertices[index + 1]);

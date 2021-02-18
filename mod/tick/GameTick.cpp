@@ -29,60 +29,27 @@ THook(void,
     }
     auto modInstance = trapdoor::bdsMod->asInstance<WorldEditMod>();
     if (modInstance->boxDisplayTick % 40 == 0) {
-        trapdoor::bdsMod->getLevel()->forEachPlayer([&](trapdoor::Actor*
-                                                            player) {
-            auto* region = modInstance->playerRegionCache[player->getNameTag()];
-            if (region && region->hasSelected()) {
-                auto dim = region->getDimensionID();
-                auto lastPos =
-                    modInstance->playerLastPosCache[player->getNameTag()];
-                spawnRectangleParticle(
-                    {lastPos.toVec3() - Vec3(0.07f, 0.07f, 0.07f),
-                     lastPos.toVec3() + Vec3(1.07f, 1.07f, 1.07f)},
-                    GRAPHIC_COLOR::BLUE, dim);
-                auto mainPos =
-                    modInstance->playerMainPosCache[player->getNameTag()];
-                spawnRectangleParticle(
-                    {mainPos.toVec3() - Vec3(0.07f, 0.07f, 0.07f),
-                     mainPos.toVec3() + Vec3(1.07f, 1.07f, 1.07f)},
-                    GRAPHIC_COLOR::RED, dim);
-                switch (region->getRegionType()) {
-                    case POLY: {
-                        auto* polyRegion =
-                            reinterpret_cast<PolyRegion*>(region);
-                        auto size = polyRegion->points.size();
-                        for (int i = 0; i < size; i++)
-                            spawnRectangleParticle(
-                                {Vec3(polyRegion->points[i].x, polyRegion->minY,
-                                      polyRegion->points[i].z),
-                                 Vec3(polyRegion->points[i].x, polyRegion->maxY,
-                                      polyRegion->points[i].z) +
-                                     Vec3(1, 1, 1)},
-                                GRAPHIC_COLOR::GREEN, dim);
-                        break;
-                    }
-                    case CONVEX: {
-                        auto* convexRegion =
-                            reinterpret_cast<ConvexRegion*>(region);
-                        auto size = convexRegion->vertices.size();
-                        for (auto vertice : convexRegion->vertices)
-                            spawnRectangleParticle(
-                                {Vec3(vertice.x, vertice.y, vertice.z),
-                                 Vec3(vertice.x, vertice.y, vertice.z) +
-                                     Vec3(1, 1, 1)},
-                                GRAPHIC_COLOR::GREEN, dim);
-                        break;
-                    }
-                    case SPHERE: {
-                        break;
-                    }
-                    default: {
-                        spawnRectangleParticle(region->getBoundBox().toAABB(),
-                                               GRAPHIC_COLOR::YELLOW, dim);
-                    }
+        trapdoor::bdsMod->getLevel()->forEachPlayer(
+            [&](trapdoor::Actor* player) {
+                auto* region =
+                    modInstance->playerRegionCache[player->getNameTag()];
+                if (region && region->hasSelected()) {
+                    auto dim = region->getDimensionID();
+                    region->drawRegion();
+                    auto lastPos =
+                        modInstance->playerLastPosCache[player->getNameTag()];
+                    spawnRectangleParticle(
+                        {lastPos.toVec3() - Vec3(0.07f, 0.07f, 0.07f),
+                         lastPos.toVec3() + Vec3(1.07f, 1.07f, 1.07f)},
+                        GRAPHIC_COLOR::BLUE, dim);
+                    auto mainPos =
+                        modInstance->playerMainPosCache[player->getNameTag()];
+                    spawnRectangleParticle(
+                        {mainPos.toVec3() - Vec3(0.07f, 0.07f, 0.07f),
+                         mainPos.toVec3() + Vec3(1.07f, 1.07f, 1.07f)},
+                        GRAPHIC_COLOR::RED, dim);
                 }
-            }
-        });
+            });
     }
     modInstance->boxDisplayTick += 1;
     original(serverLevel);

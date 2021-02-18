@@ -6,6 +6,7 @@
 #define WORLDEDIT_REGION_H
 
 #include "graphics/AABB.h"
+#include "graphics/particle.h"
 #include <functional>
 #include <algorithm>
 using namespace trapdoor;
@@ -36,7 +37,7 @@ class Region {
     virtual void updateBoundingBox() = 0;
 
     // virtual void shift(const BlockPos& change) = 0;
-    virtual bool setMainPos(const BlockPos& pos , const int& dim) = 0;
+    virtual bool setMainPos(const BlockPos& pos, const int& dim) = 0;
 
     virtual bool setVicePos(const BlockPos& pos, const int& dim) = 0;
 
@@ -44,6 +45,8 @@ class Region {
 
     virtual void forEachBlockInRegion(
         const std::function<void(const BlockPos&)>& todo);
+
+    virtual void drawRegion();
 
     inline bool hasSelected() { return this->selecting; }
 
