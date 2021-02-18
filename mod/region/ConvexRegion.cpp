@@ -36,6 +36,7 @@ ConvexRegion::ConvexRegion(const BoundingBox& region, const int& dim)
     vertexBacklog.clear();
     edges.clear();
     hasLast = false;
+    centerAccum = BlockPos(0);
     this->regionType = CONVEX;
 }
 
@@ -137,6 +138,7 @@ bool ConvexRegion::setMainPos(const BlockPos& pos, const int& dim) {
     triangles.clear();
     vertexBacklog.clear();
     edges.clear();
+    centerAccum = BlockPos(0);
     return addVertex(pos);
 }
 
@@ -145,6 +147,38 @@ bool ConvexRegion::setVicePos(const BlockPos& pos, const int& dim) {
         return false;
     }
     return addVertex(pos);
+}
+
+void ConvexRegion::shift(const BlockPos& change) {
+    boundingBox.minPos = boundingBox.minPos + change;
+    boundingBox.maxPos = boundingBox.maxPos + change;
+    auto tmpVertices = new std::unordered_set<BlockPos, _hash>(vertices);
+    vertices.clear();
+    for (auto vertice : *tmpVertices) {
+        vertices.insert(vertice + change);
+    }
+    delete tmpVertices;
+    auto tmpVertexBacklog =
+        new std::unordered_set<BlockPos, _hash>(vertexBacklog);
+    vertexBacklog.clear();
+    for (auto vertex : *tmpVertexBacklog) {
+        vertexBacklog.insert(vertex);
+    }
+    delete tmpVertexBacklog;
+    for (auto triangle : triangles) {
+        Vec3 v0 = triangle.getVertex(0);
+        Vec3 v1 = triangle.getVertex(1);
+        Vec3 v2 = triangle.getVertex(2);
+        triangle = Triangle(v0, v1, v2);
+    }
+    auto tmpEdges = new std::unordered_set<Edge, _hash>(edges);
+    edges.clear();
+    for(auto edge : *tmpEdges) {
+        edges.insert(edge);
+    }
+    delete tmpEdges;
+    centerAccum = centerAccum + change * (int)vertices.size();
+    hasLast = false;
 }
 
 bool ConvexRegion::contains(const BlockPos& pos) {

@@ -9,6 +9,9 @@
 
 #define _USING_V110_SDK71_ 1
 
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
 #include "winver.h"
 #if 0
 #include <windows.h>

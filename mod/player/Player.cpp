@@ -64,13 +64,13 @@ THook(
         player->getBlockSource()->setBlock(pos, block);
         auto* region = modInstance->playerRegionCache[player->getNameTag()];
         if (region && region->setMainPos(*pos, player->getDimensionID())) {
-            trapdoor::info(player, "set point1 %d %d %d", pos->x, pos->y,
+            trapdoor::info(player, "于 (%d,%d,%d) 设置主点", pos->x, pos->y,
                            pos->z);
             modInstance->boxDisplayTick = 0;
             modInstance->playerMainPosCache[player->getNameTag()] = *pos;
             modInstance->playerLastPosCache.erase(player->getNameTag());
         } else {
-            trapdoor::error(player, "fail to set point1");
+            trapdoor::error(player, "主点设置失败");
         }
     } else {
         original(self, pos, a3, a4);

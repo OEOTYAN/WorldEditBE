@@ -83,6 +83,12 @@ class ConvexRegion : public Region {
 
     void drawRegion() override;
 
+    void shift(const BlockPos& changes) override;
+
+    Vec3 getCenter() const override {
+        return centerAccum.toVec3() * (1 / vertices.size());
+    };
+
     bool setMainPos(const BlockPos& pos, const int& dim) override;
 
     bool setVicePos(const BlockPos& pos, const int& dim) override;

@@ -18,7 +18,7 @@ class SphereRegion : public Region {
 
     bool setMainPos(const BlockPos& pos, const int& dim) override;
 
-    BlockPos getCenter() const { return center; };
+    Vec3 getCenter() const override { return center.toVec3() + Vec3(0.5f); };
 
     void drawRegion() override;
 

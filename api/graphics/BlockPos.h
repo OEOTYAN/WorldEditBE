@@ -95,6 +95,7 @@ namespace trapdoor {
         BlockPos2 InChunkOffset() const;
 
         int operator*(const BlockPos& pos) const;
+        BlockPos operator*(const int& num) const;
 
         BlockPos operator+(const BlockPos& pos) const;
 

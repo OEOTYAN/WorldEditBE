@@ -4,6 +4,9 @@
 // on 2020/12/2.
 //
 
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
 #include <cstdarg>
 #include <ctime>
 #include "Windows.h"

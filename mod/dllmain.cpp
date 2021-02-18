@@ -1,3 +1,6 @@
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
 #include <Windows.h>
 #include "tools/DirtyLogger.h"
 #include "BDSMod.h"

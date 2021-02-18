@@ -4,10 +4,11 @@
 
 #ifndef WORLDEDIT_REGION_H
 #define WORLDEDIT_REGION_H
-
 #include "graphics/AABB.h"
+#include "Message.h"
 #include "graphics/particle.h"
 #include <functional>
+#include <vector>
 #include <algorithm>
 using namespace trapdoor;
 enum RegionType {
@@ -36,7 +37,18 @@ class Region {
 
     virtual void updateBoundingBox() = 0;
 
-    // virtual void shift(const BlockPos& change) = 0;
+    virtual void expand(const std::vector<BlockPos>& changes, Actor* player) {
+        trapdoor::error(player, "选区无法扩展");
+    };
+
+    virtual void contract(const std::vector<BlockPos>& changes, Actor* player) {
+        trapdoor::error(player, "选区无法收缩");
+    };
+
+    virtual void shift(const BlockPos& changes){};
+
+    virtual Vec3 getCenter() const { return boundingBox.toAABB().getCenter(); };
+
     virtual bool setMainPos(const BlockPos& pos, const int& dim) = 0;
 
     virtual bool setVicePos(const BlockPos& pos, const int& dim) = 0;
