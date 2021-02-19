@@ -9,7 +9,7 @@
 #include "BDSMod.h"
 #include "StringTool.h"
 
-#define MAX_LENGTH (32.0f)
+#define MAX_LENGTH (16.0f)
 namespace trapdoor {
 
     namespace {
@@ -230,7 +230,6 @@ namespace trapdoor {
             std::string num = std::to_string((int)vector.x) + "_" +
                               std::to_string((int)vector.y) + "_" +
                               std::to_string((int)vector.z) + "_";
-            // std::string num = "0_0_1_";
             stringReplace(num, "-", "_");
             if (isGreater)
                 length = round(vector.length());
