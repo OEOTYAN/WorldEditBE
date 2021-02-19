@@ -15,6 +15,15 @@ namespace trapdoor {
                     (vec3.z - z) * (vec3.z - z));
     }
 
+    float Vec3::chebyshevDistanceTo(const Vec3& vec3) const {
+        return std::max(std::max(abs(vec3.x - x), abs(vec3.y - y)),
+                        abs(vec3.z - z));
+    }
+
+    float Vec3::chebyshevLength() const {
+        return std::max(std::max(abs(x), abs(y)), abs(z));
+    }
+
     float Vec3::length() const { return sqrt(x * x + y * y + z * z); }
 
     std::string Vec3::toString() const {
@@ -75,6 +84,8 @@ namespace trapdoor {
     Vec3 Vec3::operator-(const Vec3& v) const {
         return {this->x - v.x, this->y - v.y, this->z - v.z};
     }
+
+    Vec3 Vec3::operator-() const { return {-x, -y, -z}; }
 
     Vec3 Vec3::operator*(float times) const {
         return {x * times, y * times, z * times};

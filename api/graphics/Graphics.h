@@ -24,10 +24,7 @@ namespace trapdoor {
                   float length,
                   GRAPHIC_COLOR color,
                   int dimType = 0);
-    void drawObliqueLine(Vec3 start,
-                         Vec3 end,
-                         GRAPHIC_COLOR color,
-                         int dimType);
+    void drawOrientedLine(Vec3 start, Vec3 end, int dimType);
 }  // namespace trapdoor
 typedef trapdoor::GRAPHIC_COLOR GRAPH_COLOR;
 

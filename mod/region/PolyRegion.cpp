@@ -63,13 +63,13 @@ void PolyRegion::drawRegion() {
     }
     for (int y : {minY, maxY}) {
         for (int i = 0; i < size - 1; i++) {
-            drawObliqueLine(Vec3(points[i].x, y, points[i].z),
+            drawOrientedLine(Vec3(points[i].x, y, points[i].z),
                             Vec3(points[i + 1].x, y, points[i + 1].z),
-                            GRAPHIC_COLOR::YELLOW, dimensionID);
+                            dimensionID);
         }
-        drawObliqueLine(Vec3(points[0].x, y, points[0].z),
+        drawOrientedLine(Vec3(points[0].x, y, points[0].z),
                         Vec3(points[size - 1].x, y, points[size - 1].z),
-                        GRAPHIC_COLOR::YELLOW, dimensionID);
+                        dimensionID);
     }
 };
 

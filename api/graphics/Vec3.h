@@ -36,6 +36,8 @@ namespace trapdoor {
 
         Vec3 operator-(const Vec3& v) const;
 
+        Vec3 operator-() const;
+
         Vec3 operator*(float times) const;
 
         Vec3 operator*(const Vec3& v) const;
@@ -48,7 +50,11 @@ namespace trapdoor {
 
         float distanceTo(const Vec3& vec3) const;
 
+        float chebyshevDistanceTo(const Vec3& vec3) const;
+
         float length() const;
+
+        float chebyshevLength() const;
 
         std::string toString() const;
 

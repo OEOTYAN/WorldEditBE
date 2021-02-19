@@ -162,19 +162,20 @@ void ConvexRegion::shift(const BlockPos& change) {
         new std::unordered_set<BlockPos, _hash>(vertexBacklog);
     vertexBacklog.clear();
     for (auto vertex : *tmpVertexBacklog) {
-        vertexBacklog.insert(vertex);
+        vertexBacklog.insert(vertex + change);
     }
     delete tmpVertexBacklog;
     for (auto triangle : triangles) {
-        Vec3 v0 = triangle.getVertex(0);
-        Vec3 v1 = triangle.getVertex(1);
-        Vec3 v2 = triangle.getVertex(2);
+        Vec3 v0 = triangle.getVertex(0) + change.toVec3();
+        Vec3 v1 = triangle.getVertex(1) + change.toVec3();
+        Vec3 v2 = triangle.getVertex(2) + change.toVec3();
         triangle = Triangle(v0, v1, v2);
     }
     auto tmpEdges = new std::unordered_set<Edge, _hash>(edges);
     edges.clear();
-    for(auto edge : *tmpEdges) {
-        edges.insert(edge);
+    for (auto edge : *tmpEdges) {
+        edges.insert(
+            Edge(edge.start + change.toVec3(), edge.end + change.toVec3()));
     }
     delete tmpEdges;
     centerAccum = centerAccum + change * (int)vertices.size();
@@ -201,8 +202,7 @@ void ConvexRegion::drawRegion() {
              Vec3(vertice.x, vertice.y, vertice.z) + Vec3(1.0f)},
             GRAPHIC_COLOR::GREEN, dimensionID);
     for (auto edge : edges)
-        drawObliqueLine(edge.start, edge.end, GRAPHIC_COLOR::YELLOW,
-                        dimensionID);
+        drawOrientedLine(edge.start, edge.end, dimensionID);
 };
 
 bool Edge::operator==(const Edge& other) const {
