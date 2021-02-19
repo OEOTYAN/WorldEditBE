@@ -7,7 +7,9 @@
 #include "Particle.h"
 #include "Vec3.h"
 #include "BDSMod.h"
+#include "StringTool.h"
 
+#define MAX_LENGTH (16.0f)
 namespace trapdoor {
 
     namespace {
@@ -197,40 +199,71 @@ namespace trapdoor {
             spawnParticle(points.first, particleBackTypeInv, dimType);
         }
     }
-    void drawObliqueLine(Vec3 start,
-                         Vec3 end,
-                         GRAPHIC_COLOR color,
-                         int dimType) {
-        std::string str = "worldedit:point";
-        std::string str_back = "worldedit:point_back";
-        switch (color) {
-            case GRAPHIC_COLOR::WHITE:
-                str += "W";
-                str_back += "W";
-                break;
-            case GRAPHIC_COLOR::RED:
-                str += "R";
-                str_back += "R";
-                break;
-            case GRAPHIC_COLOR::YELLOW:
-                str += "Y";
-                str_back += "Y";
-                break;
-            case GRAPHIC_COLOR::BLUE:
-                str += "B";
-                str_back += "B";
-                break;
-            case GRAPHIC_COLOR::GREEN:
-                str += "G";
-                str_back += "G";
-                break;
+    void drawOrientedLine(Vec3 start, Vec3 end, int dimType) {
+        Vec3 tmpStart, tmpEnd, vector;
+        if (start.y > end.y) {
+            tmpStart = end;
+            tmpEnd = start;
+        } else {
+            tmpStart = start;
+            tmpEnd = end;
         }
-        int counter = 0;
-        for (Vec3 i = start; counter < (end - start).length() * 10;
-             i = i + (end - start).normalize() * 0.1f) {
-            counter += 1;
-            spawnParticle(i + Vec3(0.5f), str, dimType);
-            spawnParticle(i + Vec3(0.5f), str_back, dimType);
-        }
+        float tmpChebyshevLength;
+        do {
+            vector = tmpEnd - tmpStart;
+            float chebyshevLength = vector.chebyshevLength();
+            tmpChebyshevLength = chebyshevLength;
+            bool isGreater = false;
+            if (chebyshevLength > MAX_LENGTH) {
+                isGreater = true;
+            }
+            int length;
+            if (!isGreater) {
+                length = round(vector.length());
+            }
+            vector = vector * (MAX_LENGTH / chebyshevLength);
+            vector.x = round(vector.x);
+            vector.y = round(vector.y);
+            vector.z = round(vector.z);
+            Vec3 tmpVector = vector;
+            vector = vector.y >= 0 ? vector : -vector;
+            std::string num = std::to_string((int)vector.x) + "_" +
+                              std::to_string((int)vector.y) + "_" +
+                              std::to_string((int)vector.z) + "_";
+            stringReplace(num, "-", "_");
+            if (isGreater)
+                length = round(vector.length());
+            float tmpLength = length;
+            vector = vector.normalize();
+            auto mstart = tmpStart;
+            for (auto defaultLength = (int)(MAX_LENGTH); defaultLength >= 1;
+                 defaultLength /= 2) {
+                if (length >= defaultLength) {
+                    length -= defaultLength;
+                    auto point =
+                        (vector * (float)(0.5f * defaultLength) + mstart) +
+                        Vec3(0.5f);
+                    mstart = mstart + vector * (float)defaultLength;
+                    std::string particleType = "worldedit:orientedline" + num;
+                    std::string particleTypeInv =
+                        "worldedit:orientedline" + num;
+                    std::string particleBackType =
+                        "worldedit:orientedline_back" + num;
+                    std::string particleBackTypeInv =
+                        "worldedit:orientedline_back" + num;
+                    std::string mlength = std::to_string(defaultLength);
+                    // std::string mlength = "1";
+                    particleType += mlength + "mY";
+                    particleTypeInv += mlength + "pY";
+                    particleBackType += mlength + "mY";
+                    particleBackTypeInv += mlength + "pY";
+                    spawnParticle(point, particleType, dimType);
+                    spawnParticle(point, particleTypeInv, dimType);
+                    spawnParticle(point, particleBackType, dimType);
+                    spawnParticle(point, particleBackTypeInv, dimType);
+                }
+            }
+            tmpStart = tmpStart + tmpVector.normalize() * tmpLength;
+        } while (tmpChebyshevLength > MAX_LENGTH);
     }
 }  // namespace trapdoor

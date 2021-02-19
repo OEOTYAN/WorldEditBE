@@ -8,6 +8,7 @@
 #include <random>
 #include <string>
 #include "tools/CppEval.h"
+#include "tools/StringTool.h"
 #include "trapdoor.h"
 
 namespace mod {
