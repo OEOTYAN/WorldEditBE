@@ -9,7 +9,7 @@
 #include "BDSMod.h"
 #include "StringTool.h"
 
-#define MAX_LENGTH (4.0f)
+#define MAX_LENGTH (32.0f)
 namespace trapdoor {
 
     namespace {
@@ -200,56 +200,71 @@ namespace trapdoor {
         }
     }
     void drawOrientedLine(Vec3 start, Vec3 end, int dimType) {
-        Vec3 vector = end - start;
-        float chebyshevLength = vector.chebyshevLength();
-        bool isGreater = false;
-        if (chebyshevLength > MAX_LENGTH) {
-            isGreater = true;
+        Vec3 tmpStart, tmpEnd, vector;
+        if (start.y > end.y) {
+            tmpStart = end;
+            tmpEnd = start;
+        } else {
+            tmpStart = start;
+            tmpEnd = end;
         }
-        int length;
-        if (!isGreater) {
-            length = round(vector.length());
-        }
-        vector = vector * (MAX_LENGTH / chebyshevLength);
-        vector.x = round(vector.x);
-        vector.y = round(vector.y);
-        vector.z = round(vector.z);
-        std::string num = std::to_string((int)vector.x) + "_" +
-                          std::to_string((int)vector.y) + "_" +
-                          std::to_string((int)vector.z) + "_";
-        // std::string num = "0_0_1_";
-        stringReplace(num, "-", "_");
-        if (isGreater)
-            length = round(vector.length());
-        vector.normalize();
-        if (isGreater) {
-            drawOrientedLine(start + vector * length, end, dimType);
-        }
-        vector = vector.y >= 0 ? vector : -vector;
-        auto mstart = start;
-        for (auto defaultLength = (int)(MAX_LENGTH); defaultLength >= 1;
-             defaultLength /= 2) {
-            if (length >= defaultLength) {
-                length -= defaultLength;
-                auto point = (vector * (float)(0.5f * defaultLength) + mstart);
-                mstart = mstart + vector * (float)defaultLength;
-                std::string particleType = "worldedit:orientedline" + num;
-                std::string particleTypeInv = "worldedit:orientedline" + num;
-                std::string particleBackType =
-                    "worldedit:orientedline_back" + num;
-                std::string particleBackTypeInv =
-                    "worldedit:orientedline_back" + num;
-                std::string mlength = std::to_string(defaultLength);
-                // std::string mlength = "1";
-                particleType += mlength + "mY";
-                particleTypeInv += mlength + "pY";
-                particleBackType += mlength + "mY";
-                particleBackTypeInv += mlength + "pY";
-                spawnParticle(point, particleType, dimType);
-                spawnParticle(point, particleTypeInv, dimType);
-                spawnParticle(point, particleBackType, dimType);
-                spawnParticle(point, particleBackTypeInv, dimType);
+        float tmpChebyshevLength;
+        do {
+            vector = tmpEnd - tmpStart;
+            float chebyshevLength = vector.chebyshevLength();
+            tmpChebyshevLength = chebyshevLength;
+            bool isGreater = false;
+            if (chebyshevLength > MAX_LENGTH) {
+                isGreater = true;
             }
-        }
+            int length;
+            if (!isGreater) {
+                length = round(vector.length());
+            }
+            vector = vector * (MAX_LENGTH / chebyshevLength);
+            vector.x = round(vector.x);
+            vector.y = round(vector.y);
+            vector.z = round(vector.z);
+            Vec3 tmpVector = vector;
+            vector = vector.y >= 0 ? vector : -vector;
+            std::string num = std::to_string((int)vector.x) + "_" +
+                              std::to_string((int)vector.y) + "_" +
+                              std::to_string((int)vector.z) + "_";
+            // std::string num = "0_0_1_";
+            stringReplace(num, "-", "_");
+            if (isGreater)
+                length = round(vector.length());
+            float tmpLength = length;
+            vector = vector.normalize();
+            auto mstart = tmpStart;
+            for (auto defaultLength = (int)(MAX_LENGTH); defaultLength >= 1;
+                 defaultLength /= 2) {
+                if (length >= defaultLength) {
+                    length -= defaultLength;
+                    auto point =
+                        (vector * (float)(0.5f * defaultLength) + mstart) +
+                        Vec3(0.5f);
+                    mstart = mstart + vector * (float)defaultLength;
+                    std::string particleType = "worldedit:orientedline" + num;
+                    std::string particleTypeInv =
+                        "worldedit:orientedline" + num;
+                    std::string particleBackType =
+                        "worldedit:orientedline_back" + num;
+                    std::string particleBackTypeInv =
+                        "worldedit:orientedline_back" + num;
+                    std::string mlength = std::to_string(defaultLength);
+                    // std::string mlength = "1";
+                    particleType += mlength + "mY";
+                    particleTypeInv += mlength + "pY";
+                    particleBackType += mlength + "mY";
+                    particleBackTypeInv += mlength + "pY";
+                    spawnParticle(point, particleType, dimType);
+                    spawnParticle(point, particleTypeInv, dimType);
+                    spawnParticle(point, particleBackType, dimType);
+                    spawnParticle(point, particleBackTypeInv, dimType);
+                }
+            }
+            tmpStart = tmpStart + tmpVector.normalize() * tmpLength;
+        } while (tmpChebyshevLength > MAX_LENGTH);
     }
 }  // namespace trapdoor
