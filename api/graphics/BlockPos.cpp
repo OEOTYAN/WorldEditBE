@@ -29,6 +29,9 @@ namespace trapdoor {
 
     Vec3 BlockPos::toVec3() const { return {x, y, z}; }
 
+    BlockPos abs(const BlockPos& v) {
+        return {std::abs(v.x), std::abs(v.y), std::abs(v.z)};
+    }
     std::string BlockPos::toString() const {
         return "[" + std::to_string(x) + "," + std::to_string(y) + "," +
                std::to_string(z) + "]";

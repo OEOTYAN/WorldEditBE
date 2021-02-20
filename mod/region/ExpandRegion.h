@@ -9,12 +9,17 @@
 
 class ExpandRegion : public Region {
    public:
-    BlockPos pos1;
-    BlockPos pos2 = {0, -65, 0};
     BlockPos mainPos;
+    BlockPos vicePos;
     void updateBoundingBox() override;
 
     explicit ExpandRegion(const BoundingBox& region, const int& dim);
+
+    void expand(const std::vector<BlockPos>& changes, Actor* player) override;
+
+    void contract(const std::vector<BlockPos>& changes, Actor* player) override;
+
+    void shift(const BlockPos& change) override;
 
     bool setMainPos(const BlockPos& pos, const int& dim) override;
 

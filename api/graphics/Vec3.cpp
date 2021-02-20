@@ -16,12 +16,12 @@ namespace trapdoor {
     }
 
     float Vec3::chebyshevDistanceTo(const Vec3& vec3) const {
-        return std::max(std::max(abs(vec3.x - x), abs(vec3.y - y)),
-                        abs(vec3.z - z));
+        return std::max(std::max(std::abs(vec3.x - x), std::abs(vec3.y - y)),
+                        std::abs(vec3.z - z));
     }
 
     float Vec3::chebyshevLength() const {
-        return std::max(std::max(abs(x), abs(y)), abs(z));
+        return std::max(std::max(std::abs(x), std::abs(y)), std::abs(z));
     }
 
     float Vec3::length() const { return sqrt(x * x + y * y + z * z); }
@@ -51,12 +51,12 @@ namespace trapdoor {
         FACING fx = this->x > 0 ? FACING::POS_X : FACING::NEG_X;
         FACING fz = this->x > 0 ? FACING::POS_Z : FACING::NEG_Z;
         std::string s;
-        if (abs(this->x) >= abs(this->z)) {
+        if (std::abs(this->x) >= std::abs(this->z)) {
             s = facingToDirString(fx);
             s += " (";
             s += facingToString(fx);
             s += ")";
-        } else if (1.732 * abs(this->z) > abs(this->x)) {
+        } else if (1.732 * std::abs(this->z) > std::abs(this->x)) {
             s = facingToDirString(fz);
             s += " (";
             s += facingToString(fz);

@@ -22,6 +22,12 @@ class PolyRegion : public Region {
 
     explicit PolyRegion(const BoundingBox& region, const int& dim);
 
+    void expand(const std::vector<BlockPos>& changes, Actor* player) override;
+
+    void contract(const std::vector<BlockPos>& changes, Actor* player) override;
+
+    void shift(const BlockPos& change) override;
+
     void drawRegion() override;
 
     bool setMainPos(const BlockPos& pos, const int& dim) override;

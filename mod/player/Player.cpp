@@ -64,7 +64,7 @@ THook(
         player->getBlockSource()->setBlock(pos, block);
         auto* region = modInstance->playerRegionCache[player->getNameTag()];
         if (region && region->setMainPos(*pos, player->getDimensionID())) {
-            trapdoor::info(player, "于 (%d,%d,%d) 设置主点", pos->x, pos->y,
+            trapdoor::info(player, "§6于 (%d,%d,%d) 设置主点", pos->x, pos->y,
                            pos->z);
             modInstance->boxDisplayTick = 0;
             modInstance->playerMainPosCache[player->getNameTag()] = *pos;

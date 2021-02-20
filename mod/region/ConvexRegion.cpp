@@ -198,8 +198,7 @@ void ConvexRegion::drawRegion() {
     auto size = vertices.size();
     for (auto vertice : vertices)
         spawnRectangleParticle(
-            {Vec3(vertice.x, vertice.y, vertice.z),
-             Vec3(vertice.x, vertice.y, vertice.z) + Vec3(1.0f)},
+            {vertice.toVec3(), vertice.toVec3() + Vec3(1.0f)},
             GRAPHIC_COLOR::GREEN, dimensionID);
     for (auto edge : edges)
         drawOrientedLine(edge.start, edge.end, dimensionID);

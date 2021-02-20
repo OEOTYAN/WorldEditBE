@@ -53,6 +53,42 @@ bool PolyRegion::setVicePos(const BlockPos& pos, const int& dim) {
     return true;
 }
 
+void PolyRegion::expand(const std::vector<BlockPos>& changes, Actor* player) {
+    for (BlockPos change : changes) {
+        if (change.x != 0 || change.z != 0) {
+            trapdoor::error(player, "该选区只可垂直扩展");
+            return;
+        }
+        int changeY = change.y;
+        if (changeY > 0) {
+            maxY += changeY;
+        } else {
+            minY += changeY;
+        }
+    }
+    updateBoundingBox();
+}
+
+void PolyRegion::contract(const std::vector<BlockPos>& changes, Actor* player) {
+    for (BlockPos change : changes) {
+        if (change.x != 0 || change.z != 0) {
+            trapdoor::error(player, "该选区只可垂直收缩");
+            return;
+        }
+        int changeY = change.y;
+        if (changeY > 0) {
+            minY += changeY;
+        } else {
+            maxY += changeY;
+        }
+    }
+    updateBoundingBox();
+}
+
+void PolyRegion::shift(const BlockPos& change) {
+    updateBoundingBox();
+}
+
 void PolyRegion::drawRegion() {
     auto size = points.size();
     for (int i = 0; i < size; i++) {
@@ -64,12 +100,12 @@ void PolyRegion::drawRegion() {
     for (int y : {minY, maxY}) {
         for (int i = 0; i < size - 1; i++) {
             drawOrientedLine(Vec3(points[i].x, y, points[i].z),
-                            Vec3(points[i + 1].x, y, points[i + 1].z),
-                            dimensionID);
+                             Vec3(points[i + 1].x, y, points[i + 1].z),
+                             dimensionID);
         }
         drawOrientedLine(Vec3(points[0].x, y, points[0].z),
-                        Vec3(points[size - 1].x, y, points[size - 1].z),
-                        dimensionID);
+                         Vec3(points[size - 1].x, y, points[size - 1].z),
+                         dimensionID);
     }
 };
 

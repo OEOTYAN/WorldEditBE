@@ -78,6 +78,8 @@ namespace trapdoor {
 
         bool operator!=(const BlockPos& v) const;
 
+        friend BlockPos abs(const BlockPos& v);
+
         float distanceTo(const BlockPos& blockPos) const;
 
         friend std::ostream& operator<<(std::ostream& os, const BlockPos& vec3);

@@ -38,14 +38,14 @@ class Region {
     virtual void updateBoundingBox() = 0;
 
     virtual void expand(const std::vector<BlockPos>& changes, Actor* player) {
-        trapdoor::error(player, "选区无法扩展");
+        trapdoor::error(player, "该选区无法被扩展");
     };
 
     virtual void contract(const std::vector<BlockPos>& changes, Actor* player) {
-        trapdoor::error(player, "选区无法收缩");
+        trapdoor::error(player, "该选区无法被收缩");
     };
 
-    virtual void shift(const BlockPos& changes){};
+    virtual void shift(const BlockPos& change){};
 
     virtual Vec3 getCenter() const { return boundingBox.toAABB().getCenter(); };
 

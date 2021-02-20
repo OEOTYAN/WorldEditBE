@@ -15,6 +15,12 @@ class CuboidRegion : public Region {
 
     explicit CuboidRegion(const BoundingBox& region, const int& dim);
 
+    void expand(const std::vector<BlockPos>& changes, Actor* player) override;
+
+    void contract(const std::vector<BlockPos>& changes, Actor* player) override;
+
+    void shift(const BlockPos& change) override;
+
     bool setMainPos(const BlockPos& pos, const int& dim) override;
 
     bool setVicePos(const BlockPos& pos, const int& dim) override;

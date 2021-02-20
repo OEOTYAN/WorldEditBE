@@ -17,7 +17,7 @@ namespace trapdoor {
         std::map<float, int> binSplit(float start, float end) {
             std::map<float, int> lengthMap;
             float size = end - start;
-            if (abs(size - round(size)) > 10e-5f)  //非整数长度
+            if (std::abs(size - round(size)) > 10e-5f)  //非整数长度
                 lengthMap.insert({end - 0.5f, 1});
             int length = static_cast<int>(size);
             while (length >= 512) {

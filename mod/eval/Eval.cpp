@@ -21,19 +21,19 @@ namespace mod {
         EvalFunctions f;
         std::string s(str);
         std::string origin = s;
-        s = toLowerString(s);
-        stringReplace(s, "--", "+");
-        stringReplace(s, "and", "&&");
-        stringReplace(s, "xor", "^");
-        stringReplace(s, "or", "||");
-        stringReplace(s, "--", "+");
-        stringReplace(s, "mod", "%");
-        stringReplace(s, "==", "=");
-        stringReplace(s, "π", "pi");
+        s = trapdoor::toLowerString(s);
+        trapdoor::stringReplace(s, "--", "+");
+        trapdoor::stringReplace(s, "and", "&&");
+        trapdoor::stringReplace(s, "xor", "^");
+        trapdoor::stringReplace(s, "or", "||");
+        trapdoor::stringReplace(s, "--", "+");
+        trapdoor::stringReplace(s, "mod", "%");
+        trapdoor::stringReplace(s, "==", "=");
+        trapdoor::stringReplace(s, "π", "pi");
         std::ostringstream oss;
         oss.precision(22);
         auto x1 = cpp_eval::eval<double>(s.c_str(), getInBuildVariables(), f);
-        if (abs(x1 - round(x1)) < 10E-8) {
+        if (std::abs(x1 - round(x1)) < 10E-8) {
             x1 = round(x1);
         }
         if (x1 == -0)
