@@ -6,6 +6,9 @@
 #define WORLDEDIT_SPHEREREGION_H
 
 #include "Region.h"
+#include <cmath>
+
+#define PI 3.141592653589793238462643383279
 
 class SphereRegion : public Region {
    private:
@@ -27,6 +30,11 @@ class SphereRegion : public Region {
     bool setMainPos(const BlockPos& pos, const int& dim) override;
 
     Vec3 getCenter() const override { return center.toVec3() + Vec3(0.5f); };
+
+    int size() const override {
+        return (int)std::round(4.0 / 3.0 * PI * (double)radius *
+                               (double)radius * (double)radius);
+    };
 
     void drawRegion() override;
 

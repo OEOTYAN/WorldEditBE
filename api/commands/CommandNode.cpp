@@ -7,15 +7,14 @@
 #include <algorithm>
 #include <utility>
 #include "tools/MsgBuilder.h"
+#include "tools/StringTool.h"
 
 namespace trapdoor {
-    namespace {
-        bool isValidIntString(const std::string& str) {
-            return std::all_of(str.begin(), str.end(), [](char c) {
-                return ('0' <= c && c <= '9') || c == '-';
-            });
-        }
-    }  // namespace
+    bool isValidIntString(const std::string& str) {
+        return std::all_of(str.begin(), str.end(), [](char c) {
+            return ('0' <= c && c <= '9') || c == '-';
+        });
+    }
 
     CommandNode* Arg(const std::string& args,
                      const std::string& desc,
@@ -49,22 +48,22 @@ namespace trapdoor {
             }
         } else if (idx == tokens.size() - 1) {  //当前是最后一个token
             ArgHolder* holder = nullptr;
+            std::string tmp = tokens[idx];
             switch (this->argType) {
                 case ArgType::INT:
-                    executeNow = isValidIntString(tokens[idx]);
-                    holder =
-                        integerArg(strtol(tokens[idx].c_str(), nullptr, 10));
+                    trapdoor::stringReplace(tmp, " ", "");
+                    executeNow = isValidIntString(tmp);
+                    holder = integerArg(strtol(tmp.c_str(), nullptr, 10));
                     break;
                 case ArgType::BOOL:
-                    executeNow = tokens[idx] == "true" ||
-                                 tokens[idx] == "false" || tokens[idx] == "1" ||
-                                 tokens[idx] == "0";
-                    holder =
-                        boolArg(tokens[idx] == "true" || tokens[idx] == "1");
+                    trapdoor::stringReplace(tmp, " ", "");
+                    executeNow = tmp == "true" || tmp == "false" ||
+                                 tmp == "1" || tmp == "0";
+                    holder = boolArg(tmp == "true" || tmp == "1");
                     break;
                 case ArgType::STR:
                     executeNow = true;
-                    holder = strArg(tokens[idx]);
+                    holder = strArg(tmp);
                     break;
                 case ArgType::NONE:
                     executeNow = false;

@@ -81,6 +81,8 @@ class ConvexRegion : public Region {
 
     explicit ConvexRegion(const BoundingBox& region, const int& dim);
 
+    int size() const override;
+
     void drawRegion() override;
 
     void shift(const BlockPos& change) override;

@@ -89,6 +89,19 @@ void PolyRegion::shift(const BlockPos& change) {
     updateBoundingBox();
 }
 
+int PolyRegion::size() const {
+    int area = 0;
+    int j = points.size() - 1;
+    for (int i = 0; i < points.size(); ++i) {
+        int x = points[j].x + points[i].x;
+        int z = points[j].z - points[i].z;
+        area += x * z;
+        j = i;
+    }
+
+    return (int)std::floor(std::abs((double)area * 0.5)) * (maxY - minY + 1);
+};
+
 void PolyRegion::drawRegion() {
     auto size = points.size();
     for (int i = 0; i < size; i++) {

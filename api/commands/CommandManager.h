@@ -15,7 +15,7 @@
 #include "entity/Actor.h"
 
 namespace trapdoor {
-
+    std::vector<std::string> stringToTokens(std::string& commandString);
     struct CommandConfig {
         bool enable = true;                              //是否启用
         CommandPermissionLevel permissionLevel = Admin;  //权限等级

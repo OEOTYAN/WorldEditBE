@@ -5,17 +5,33 @@
 #include "CommandManager.h"
 #include "tools/Message.h"
 #include "tools/DirtyLogger.h"
+#include "tools/StringTool.h"
 #include "Command.h"
 
 namespace trapdoor {
+    std::vector<std::string> stringToTokens(std::string& commandString) {
+        std::vector<std::string> tokens;
+        std::stringstream str(commandString);
+        std::string command;
+        while (str >> commandString)
+            tokens.push_back(commandString);
+        return tokens;
+    }
     namespace {
         //字符串转为tokens列表
         std::vector<std::string> tokenize(std::string& commandString) {
             std::vector<std::string> tokens;
-            std::stringstream str(commandString);
-            std::string command;
-            while (str >> commandString)
-                tokens.push_back(commandString);
+            std::string tmpcommandString(commandString);
+            toLowerString(tmpcommandString);
+            std::stringstream str(tmpcommandString);
+            std::string command = "";
+            str >> commandString;
+            tokens.push_back(commandString);
+            while (str >> commandString) {
+                command = command + " " + commandString + " ";
+            }
+            trapdoor::stringReplace(command, "  ", " ");
+            tokens.push_back(command);
             return tokens;
         }
     }  // namespace

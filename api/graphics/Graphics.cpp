@@ -7,7 +7,6 @@
 #include "Particle.h"
 #include "Vec3.h"
 #include "BDSMod.h"
-#include "StringTool.h"
 
 #define MAX_LENGTH (16.0f)
 namespace trapdoor {

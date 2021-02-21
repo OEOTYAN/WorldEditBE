@@ -101,6 +101,8 @@ namespace trapdoor {
 
         BlockPos operator+(const BlockPos& pos) const;
 
+        BlockPos operator-(const BlockPos& pos) const;
+
         bool operator<(const BlockPos& rhs) const;
         bool containedWithin(const BlockPos& min, const BlockPos& max) const;
     };

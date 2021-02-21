@@ -570,8 +570,11 @@ namespace trapdoor {
     };
 
     trapdoor::Block* getBlockByID(BlockType type, unsigned short variant = 0);
+    trapdoor::Block* getBlockByName(std::string name,
+                                    unsigned short variant = 0);
 
     trapdoor::BlockLegacy* getBlockLegacyByID(BlockType type);
+    trapdoor::BlockLegacy* getBlockLegacyByName(std::string name);
 
     void initBlockMap();
 

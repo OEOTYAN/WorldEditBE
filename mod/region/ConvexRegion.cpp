@@ -194,6 +194,16 @@ bool ConvexRegion::contains(const BlockPos& pos) {
     return containsRaw(pos.toVec3());
 }
 
+int ConvexRegion::size() const {
+    float volume = 0;
+    for(auto triangle : triangles){
+        volume+=triangle.getVertex(0)
+            .cross(triangle.getVertex(1))
+            .dot(triangle.getVertex(2));
+    }
+    return std::abs(volume/6.0f);
+};
+
 void ConvexRegion::drawRegion() {
     auto size = vertices.size();
     for (auto vertice : vertices)

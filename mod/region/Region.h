@@ -41,6 +41,12 @@ class Region {
         trapdoor::error(player, "该选区无法被扩展");
     };
 
+    virtual int size() const {
+        return (boundingBox.maxPos.x - boundingBox.minPos.x + 1) *
+               (boundingBox.maxPos.y - boundingBox.minPos.y + 1) *
+               (boundingBox.maxPos.z - boundingBox.minPos.z + 1);
+    };
+
     virtual void contract(const std::vector<BlockPos>& changes, Actor* player) {
         trapdoor::error(player, "该选区无法被收缩");
     };

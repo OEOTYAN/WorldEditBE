@@ -1,12 +1,13 @@
 //
 // Created by xhy on 2020/12/12.
 //
-
+#pragma once
 #ifndef TRAPDOOR_GRAPHICS_H
 #define TRAPDOOR_GRAPHICS_H
 
 //#include "Particle.h"
 #include "BlockPos.h"
+#include "tools/StringTool.h"
 #include <vector>
 #include <map>
 

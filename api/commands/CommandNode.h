@@ -44,7 +44,7 @@ namespace trapdoor {
 
     inline const char* commandPermissionLevelToStr(
         CommandPermissionLevel level);
-
+    bool isValidIntString(const std::string& str);
     enum CommandFlag1 : uint8_t { None = 0, Message = 0x20 };
 
     inline const char* CommandFlag1ToStr(CommandFlag1 flag1) {

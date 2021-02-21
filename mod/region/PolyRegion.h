@@ -28,6 +28,8 @@ class PolyRegion : public Region {
 
     void shift(const BlockPos& change) override;
 
+    int size() const override;
+
     void drawRegion() override;
 
     bool setMainPos(const BlockPos& pos, const int& dim) override;

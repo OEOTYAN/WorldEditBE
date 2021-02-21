@@ -84,6 +84,9 @@ namespace trapdoor {
     BlockPos BlockPos::operator+(const BlockPos& pos) const {
         return {x + pos.x, y + pos.y, z + pos.z};
     }
+    BlockPos BlockPos::operator-(const BlockPos& pos) const {
+        return {x - pos.x, y - pos.y, z - pos.z};
+    }
 
     bool BlockPos::containedWithin(const BlockPos& min,
                                    const BlockPos& max) const {
