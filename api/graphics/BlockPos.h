@@ -13,6 +13,14 @@ namespace trapdoor {
 
     class Vec3;
 
+    enum class DIRECTION {
+        NEG_Y = 0,
+        POS_Y = 1,
+        NEG_Z = 2,
+        POS_Z = 3,
+        NEG_X = 4,
+        POS_X = 5,
+    };
     enum class FACING {
         NEG_Y = 0,
         POS_Y = 1,

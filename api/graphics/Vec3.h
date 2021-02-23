@@ -61,6 +61,8 @@ namespace trapdoor {
         BlockPos toBlockPos() const;
 
         std::string toDirString() const;
+        
+        BlockPos toDirection() const;
     };
 }  // namespace trapdoor
 

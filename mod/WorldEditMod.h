@@ -16,7 +16,12 @@ class WorldEditMod : public trapdoor::BDSMod {
     std::map<std::string, Region*> playerRegionCache;
     std::map<std::string, BlockPos> playerLastPosCache;
     std::map<std::string, BlockPos> playerMainPosCache;
-
+    std::map<std::string, long long> distr;
+    std::vector<std::pair<std::string, long long>> tmpDistr;
+    bool static tmpDistrCmp(const std::pair<std::string, long long>& a,
+                            const std::pair<std::string, long long>& b) {
+        return a.second < b.second;
+    }
     void useOnHook(Actor* player,
                    const std::string& itemName,
                    BlockPos& pos,

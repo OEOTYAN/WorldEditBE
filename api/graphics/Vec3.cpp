@@ -65,6 +65,20 @@ namespace trapdoor {
         return s;
     }
 
+    BlockPos Vec3::toDirection() const {
+        FACING fx = this->x > 0 ? FACING::POS_X : FACING::NEG_X;
+        FACING fy = this->y > 0 ? FACING::POS_Y : FACING::NEG_Y;
+        FACING fz = this->z > 0 ? FACING::POS_Z : FACING::NEG_Z;
+        std::string s;
+        if (std::abs(this->dot(Vec3(0, 1, 0))) > 0.8f){
+            return facingToBlockPos(fy);
+        }
+            if (std::abs(this->x) >= std::abs(this->z)) {
+                return facingToBlockPos(fx);
+            }
+        return facingToBlockPos(fz);
+    }
+
     bool Vec3::operator<(const Vec3& rhs) const {
         if (x < rhs.x)
             return true;

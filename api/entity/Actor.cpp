@@ -34,12 +34,14 @@ namespace trapdoor {
             this);
     }
 
-    void Actor::getViewActor(Vec3* vec3, float val) {
+    Vec3 Actor::getViewActor() {
+        Vec3 vec3;
         SYM_CALL(
             Vec3 * (*)(Actor*, Vec3*, float),
             SymHook::
                 MSSYM_B1QE13getViewVectorB1AA5ActorB2AAA4QEBAB1QA6AVVec3B2AAA1MB1AA1Z,
-            this, vec3, val);
+            this, &vec3, 1.0f);
+        return vec3;
     }
 
     std::string Actor::getNameTag() {

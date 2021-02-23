@@ -53,7 +53,7 @@ namespace trapdoor {
         Vec3* getPos();
 
         //获取视角
-        void getViewActor(Vec3* vec3, float val);
+        Vec3 getViewActor();
 
         //获取头顶tag名字
         std::string getNameTag();

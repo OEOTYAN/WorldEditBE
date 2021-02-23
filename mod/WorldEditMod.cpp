@@ -146,6 +146,10 @@ void WorldEditMod::registerCommands() {
                     trapdoor::error(player, "选区为空");
                 }
             }
+            trapdoor::stringReplace(subCommand, " ", "");
+            if (subCommand != "") {
+                trapdoor::error(player, "不存在子命令 %s", subCommand.c_str());
+            }
         });
 
     this->commandManager
@@ -153,6 +157,12 @@ void WorldEditMod::registerCommands() {
         ->EXE({
             auto subCommand = holder->getString();
             DETECT_FLAG_ERROR
+            std::string tmpSubCommand(subCommand);
+            trapdoor::stringReplace(tmpSubCommand, " ", "");
+            if (tmpSubCommand == "") {
+                trapdoor::error(player, "缺少子命令");
+                return;
+            }
             int blockID = -1;
             int state = -1;
             std::string blockName = "";
@@ -166,11 +176,14 @@ void WorldEditMod::registerCommands() {
             } else {
                 blockName = tokens[0];
             }
-            if (trapdoor::isValidIntString(tokens[1])) {
+            if (tokens.size() > 1 && trapdoor ::isValidIntString(tokens[1])) {
                 state = strtol(tokens[0].c_str(), nullptr, 10);
             } else {
-                trapdoor::error(player, "不存在子命令 %s", tokens[1].c_str());
-                return;
+                if (tokens.size() > 1) {
+                    trapdoor::error(player, "不存在子命令 %s",
+                                    tokens[1].c_str());
+                    return;
+                }
             }
             auto* region = this->playerRegionCache[player->getNameTag()];
             int64_t num = 0;
@@ -194,14 +207,20 @@ void WorldEditMod::registerCommands() {
                 trapdoor::error(player, "选区为空");
             }
         });
-    std::map<std::string, long long> distr;
+
     this->commandManager
         .registerCmd("/distr", "统计选区内方块分布率", Any, ArgType::STR)
         ->EXE({
+            this->distr.clear();
             auto subCommand = holder->getString();
             DEFFLAG(c, clipboardInfo)
             DEFFLAG(d, separateStates)
             DETECT_FLAG_ERROR
+            trapdoor::stringReplace(subCommand, " ", "");
+            if (subCommand != "") {
+                trapdoor::error(player, "不存在子命令 %s", subCommand.c_str());
+                return;
+            }
             auto* region = this->playerRegionCache[player->getNameTag()];
             long long total = 0;
             if (region && region->hasSelected() && !clipboardInfo) {
@@ -215,15 +234,26 @@ void WorldEditMod::registerCommands() {
                             blockName = blockName + ":" +
                                         std::to_string(block->getVariant());
                         }
-                        distr[blockName] += 1;
+                        if (this->distr.find(blockName) != this->distr.end()) {
+                            this->distr[blockName] += 1;
+                        } else {
+                            this->distr[blockName] = 1;
+                        }
                         total += 1;
                     });
 
                     trapdoor::info(player, "方块总数: %lld", total);
-                    for (auto iter = distr.begin(); iter != distr.end();
-                         iter++) {
+                    this->tmpDistr.clear();
+                    for (auto iter = this->distr.begin();
+                         iter != this->distr.end(); iter++) {
+                        this->tmpDistr.push_back(*iter);
+                    }
+                    sort(this->tmpDistr.begin(), this->tmpDistr.end(),
+                         tmpDistrCmp);
+                    for (auto iter = this->tmpDistr.begin();
+                         iter != this->tmpDistr.end(); iter++) {
                         trapdoor::info(
-                            player, "%lld    (%0.3f%) %s", iter->second,
+                            player, "%lld    (%0.3f%%%%) %s", iter->second,
                             iter->second * 100.0 / total, iter->first.c_str());
                     }
                 }
@@ -237,6 +267,46 @@ void WorldEditMod::registerCommands() {
                 } else {
                     trapdoor::error(player, "选区为空");
                 }
+            }
+            this->distr.clear();
+            this->tmpDistr.clear();
+        });
+
+    this->commandManager.registerCmd("/shift", "移动选区", Any, ArgType::STR)
+        ->EXE({
+            auto subCommand = holder->getString();
+            DETECT_FLAG_ERROR
+            std::string tmpSubCommand(subCommand);
+            trapdoor::stringReplace(tmpSubCommand, " ", "");
+            if (tmpSubCommand == "") {
+                trapdoor::error(player, "缺少子命令");
+                return;
+            }
+            int amount = 0;
+            std::vector<std::string> tokens = stringToTokens(subCommand);
+            if (tokens.size() > 2) {
+                trapdoor::error(player, "不存在子命令 %s", tokens[2].c_str());
+                return;
+            }
+            if (trapdoor::isValidIntString(tokens[0])) {
+                amount = strtol(tokens[0].c_str(), nullptr, 10);
+            } else {
+                trapdoor::error(player, "不存在子命令 %s", tokens[0].c_str());
+            }
+            if (tokens.size() > 1) {
+            }
+            auto* region = this->playerRegionCache[player->getNameTag()];
+            if (region && region->hasSelected()) {
+                if (region->getDimensionID() != player->getDimensionID()) {
+                    trapdoor::error(player, "请到选区对应的维度");
+                } else {
+                    BlockPos change =
+                        player->getViewActor().toDirection() * amount;
+                    region->shift(change);
+                    trapdoor::evalMsg("选区已移动");
+                }
+            } else {
+                trapdoor::error(player, "选区为空");
             }
         });
 

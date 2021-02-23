@@ -27,8 +27,8 @@ namespace trapdoor {
             void (*)(void* block, std::string&),
             MSSYM_B1QE13toDebugStringB1AA5BlockB2AAA4QEBAB1QA2AVB2QDA5basicB1UA6stringB1AA2DUB2QDA4charB1UA6traitsB1AA1DB1AA3stdB2AAA1VB2QDA9allocatorB1AA1DB1AA12B2AAA3stdB2AAA2XZ,
             this, debugStr);
-        // remove "name: "
-        return debugStr.erase(0, 6);
+        // remove "name: minecraft:"
+        return debugStr.erase(0, 16);
     }
 
     //是否是空气
